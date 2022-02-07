@@ -5,13 +5,13 @@ type TitleInputPropsType = {
   title: string;
 };
 
-const TitleInput = (props: TitleInputPropsType) => {
+const TitleInput: React.FC<TitleInputPropsType> = (props) => {
   return (
     <>
       <h3 className={classes.title}>{props.title}</h3>
       <div>
-        <input />
-        <button>+</button>
+        <input type="text" />
+        <span>+</span>
       </div>
     </>
   );
