@@ -3,13 +3,13 @@ import "./App.css";
 import ToDoList from "../src/components/ToDoList/ToDoList";
 import { TasksType } from "./components/ToDoList/ListItems/ListItems";
 
-export type FilterValuesType = "all" | "active" | "complited";
+export type FilterValuesType = "all" | "active" | "completed";
 
 const App = () => {
   const [tasks, setTasks] = useState<Array<TasksType>>([
     { id: 1, text: "HTML", isDone: true },
     { id: 2, text: "CSS", isDone: true },
-    { id: 3, text: "React", isDone: true },
+    { id: 3, text: "React", isDone: false },
     { id: 4, text: "TypeScript", isDone: false },
     { id: 5, text: "Jest", isDone: true },
   ]);
@@ -18,7 +18,7 @@ const App = () => {
 
   const getFilteredTasksForRender = () => {
     switch (filter) {
-      case "complited":
+      case "completed":
         return tasks.filter((el) => el.isDone === true);
       case "active":
         return tasks.filter((el) => el.isDone === false);
