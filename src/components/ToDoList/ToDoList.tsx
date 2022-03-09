@@ -1,21 +1,22 @@
 import React from "react";
-import { FilterValuesType } from "../../App";
+import { FilterValuesType, TasksType } from "../../App";
 import Buttons from "./Buttons/Buttons";
-import ListItems, { TasksType } from "./ListItems/ListItems";
+import ListItems from "./ListItems/ListItems";
 import TitleInput from "./TitleInput/TitleInput";
 import classes from "./ToDoList.module.css";
 
 type TodoListPropsType = {
   title: string;
   tasks: Array<TasksType>;
-  removeTaskItem: (taskID: number) => void;
+  addTask: (newTask: string) => void;
+  removeTaskItem: (taskID: string) => void;
   changeFilter: (filter: FilterValuesType) => void;
 };
 
 const ToDoList: React.FC<TodoListPropsType> = (props) => {
   return (
     <div className={classes.wrapper}>
-      <TitleInput title={props.title} />
+      <TitleInput addTask={props.addTask} title={props.title} />
       <ListItems tasks={props.tasks} removeTaskItem={props.removeTaskItem} />
       <Buttons changeFilter={props.changeFilter} />
     </div>

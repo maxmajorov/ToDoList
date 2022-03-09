@@ -1,18 +1,20 @@
 import React from "react";
 import { FilterValuesType } from "../../../App";
-import { TasksType } from "../ListItems/ListItems";
 import classes from "./Buttons.module.css";
 
 type ButtonsType = {
   changeFilter: (filter: FilterValuesType) => void;
 };
 
-const Buttons: React.FC<TasksType> = (props) => {
+const Buttons: React.FC<ButtonsType> = (props) => {
+  const onClickAllButton = () => props.changeFilter("all");
+  const onClickActiveButton = () => props.changeFilter("active");
+  const onClickCompletedButton = () => props.changeFilter("completed");
   return (
     <div className={classes.controls}>
-      <button onClick={() => props.changeFilter("all")}>All</button>
-      <button onClick={() => props.changeFilter("active")}>Active</button>
-      <button onClick={() => props.changeFilter("completed")}>Completed</button>
+      <button onClick={onClickAllButton}>All</button>
+      <button onClick={onClickActiveButton}>Active</button>
+      <button onClick={onClickCompletedButton}>Completed</button>
     </div>
   );
 };

@@ -1,27 +1,34 @@
 import React, { useState } from "react";
 import "./App.css";
 import ToDoList from "../src/components/ToDoList/ToDoList";
-import { TasksType } from "./components/ToDoList/ListItems/ListItems";
+import { v1 } from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed";
+export type TasksType = {
+  id: string;
+  text: string;
+  isDone: boolean;
+};
 
 const App = () => {
   const [tasks, setTasks] = useState<Array<TasksType>>([
-    { id: 1, text: "HTML", isDone: true },
-    { id: 2, text: "CSS", isDone: true },
-    { id: 3, text: "React", isDone: false },
-    { id: 4, text: "TypeScript", isDone: false },
-    { id: 5, text: "Jest", isDone: true },
+    { id: v1(), text: "HTML", isDone: true },
+    { id: v1(), text: "CSS", isDone: true },
+    { id: v1(), text: "React", isDone: false },
+    { id: v1(), text: "TypeScript", isDone: false },
+    { id: v1(), text: "Jest", isDone: true },
   ]);
+
+  console.log(tasks);
 
   const [filter, setFilter] = useState<FilterValuesType>("all");
 
   const getFilteredTasksForRender = () => {
     switch (filter) {
       case "completed":
-        return tasks.filter((el) => el.isDone === true);
+        return tasks.filter((el) => el.isDone);
       case "active":
-        return tasks.filter((el) => el.isDone === false);
+        return tasks.filter((el) => !el.isDone);
       default:
         return tasks;
     }
@@ -33,9 +40,15 @@ const App = () => {
 
   const filteredTasksForRender = getFilteredTasksForRender();
 
-  const removeTaskItem = (taskID: number) => {
+  const removeTaskItem = (taskID: string) => {
     const filteredTasks = tasks.filter((el) => el.id !== taskID);
     setTasks(filteredTasks);
+  };
+
+  const addTask = (newTask: string) => {
+    const addnewTask = { id: v1(), text: newTask, isDone: false };
+    const newArrayTasks = [addnewTask, ...tasks];
+    setTasks(newArrayTasks);
   };
 
   return (
@@ -43,6 +56,7 @@ const App = () => {
       <ToDoList
         title="What to learn"
         tasks={filteredTasksForRender}
+        addTask={addTask}
         removeTaskItem={removeTaskItem}
         changeFilter={changeFilter}
       />
