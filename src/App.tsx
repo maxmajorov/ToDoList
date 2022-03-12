@@ -51,14 +51,22 @@ const App = () => {
     setTasks(newArrayTasks);
   };
 
+  const changeTaskStatus = (taskID: string, isDone: boolean) => {
+    setTasks(
+      tasks.map((el) => (el.id === taskID ? { ...el, isDone: !el.isDone } : el))
+    );
+  };
+
   return (
     <div className="App">
       <ToDoList
         title="What to learn"
+        filter={filter}
         tasks={filteredTasksForRender}
         addTask={addTask}
         removeTaskItem={removeTaskItem}
         changeFilter={changeFilter}
+        changeTaskStatus={changeTaskStatus}
       />
       {/* <ToDoList
         title="Day's tasks"

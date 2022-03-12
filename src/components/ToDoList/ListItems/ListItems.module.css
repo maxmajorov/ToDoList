@@ -1,8 +1,17 @@
-.controls {
+/* .controls {
   display: flex;
   justify-content: space-between;
 }
 
 button {
   display: block;
+} */
+
+.task_item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.completed_task {
+  opacity: 0.5;
 }
