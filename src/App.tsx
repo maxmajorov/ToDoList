@@ -10,69 +10,106 @@ export type TasksType = {
   isDone: boolean;
 };
 
+type TodoListType = {
+  id: string;
+  title: string;
+  filter: FilterValuesType;
+};
+
 const App = () => {
-  const [tasks, setTasks] = useState<Array<TasksType>>([
-    { id: v1(), text: "HTML", isDone: true },
-    { id: v1(), text: "CSS", isDone: true },
-    { id: v1(), text: "React", isDone: false },
-    { id: v1(), text: "TypeScript", isDone: false },
-    { id: v1(), text: "Jest", isDone: true },
+  let todoListID_1 = v1();
+  let todoListID_2 = v1();
+
+  const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
+    { id: todoListID_1, title: "Whato to learn", filter: "all" },
+    { id: todoListID_2, title: "Whato to buy", filter: "active" },
   ]);
 
-  console.log(tasks);
+  const [tasksObj, setTasks] = useState({
+    [todoListID_1]: [
+      { id: v1(), text: "HTML", isDone: true },
+      { id: v1(), text: "CSS", isDone: true },
+      { id: v1(), text: "React", isDone: false },
+      { id: v1(), text: "TypeScript", isDone: false },
+    ],
+    [todoListID_2]: [
+      { id: v1(), text: "Milk", isDone: true },
+      { id: v1(), text: "Bread", isDone: true },
+      { id: v1(), text: "Salt", isDone: false },
+    ],
+  });
 
-  const [filter, setFilter] = useState<FilterValuesType>("all");
+  const changeFilter = (filter: FilterValuesType, todoListID: string) => {
+    let todoList = todoLists.find((el) => el.id === todoListID);
 
-  const getFilteredTasksForRender = () => {
-    switch (filter) {
-      case "completed":
-        return tasks.filter((el) => el.isDone);
-      case "active":
-        return tasks.filter((el) => !el.isDone);
-      default:
-        return tasks;
+    if (todoList) {
+      todoList.filter = filter;
+      setTodoLists([...todoLists]);
     }
   };
 
-  const changeFilter = (filter: FilterValuesType) => {
-    setFilter(filter);
+  const removeTaskItem = (taskID: string, todoListID: string) => {
+    const task = tasksObj[todoListID]; //находим по ID нужный todoList
+    const filteredTasks = task.filter((el) => el.id !== taskID); // фильтруем его
+    tasksObj[todoListID] = filteredTasks; // перезаписываем его отфильтрованными тасками
+    setTasks({ ...tasksObj }); // не мутируя исходник записываем
   };
 
-  const filteredTasksForRender = getFilteredTasksForRender();
-
-  const removeTaskItem = (taskID: string) => {
-    const filteredTasks = tasks.filter((el) => el.id !== taskID);
-    setTasks(filteredTasks);
+  const addTask = (newTask: string, todoListID: string) => {
+    const task = tasksObj[todoListID]; //находим по ID нужный todoList
+    const addnewTask = { id: v1(), text: newTask, isDone: false }; //создаем новую таску
+    const newArrayTasks = [addnewTask, ...task]; // добавляем новую таску
+    tasksObj[todoListID] = newArrayTasks; // перезаписываем с учетом новой таски
+    setTasks({ ...tasksObj }); // не мутируя исходник записываем
   };
 
-  const addTask = (newTask: string) => {
-    const addnewTask = { id: v1(), text: newTask, isDone: false };
-    const newArrayTasks = [addnewTask, ...tasks];
-    setTasks(newArrayTasks);
-  };
-
-  const changeTaskStatus = (taskID: string, isDone: boolean) => {
-    setTasks(
-      tasks.map((el) => (el.id === taskID ? { ...el, isDone: !el.isDone } : el))
+  const changeTaskStatus = (
+    taskID: string,
+    isDone: boolean,
+    todoListID: string
+  ) => {
+    const task = tasksObj[todoListID]; //находим по ID нужный todoList
+    tasksObj[todoListID] = task.map(
+      (el) => (el.id === taskID ? { ...el, isDone: !el.isDone } : el) // перезаписываем с учетом нового статуса таски
     );
+
+    setTasks({ ...tasksObj }); // не мутируя исходник записываем
+  };
+
+  const removeTodoList = (todoListID: string) => {
+    const withoutRemoveTodo = todoLists.filter((el) => el.id !== todoListID); //фильтруем листы по ID
+    setTodoLists(withoutRemoveTodo); //устанавливаем с учетом отвильтрованных листов
+    delete tasksObj[todoListID]; //также удаляем задачи для этого листа
+    setTasks({ ...tasksObj }); // также установливаем таски заново с учетом удаленных
   };
 
   return (
     <div className="App">
-      <ToDoList
-        title="What to learn"
-        filter={filter}
-        tasks={filteredTasksForRender}
-        addTask={addTask}
-        removeTaskItem={removeTaskItem}
-        changeFilter={changeFilter}
-        changeTaskStatus={changeTaskStatus}
-      />
-      {/* <ToDoList
-        title="Day's tasks"
-        tasks={tasks[1]}
-        removeTaskItem={removeTaskItem}
-      /> */}
+      {todoLists.map((el) => {
+        let todoListTasks = tasksObj[el.id]; // присваиваем тот или туду лист в зависимости от id
+        let filteredTasksForRender = todoListTasks;
+
+        el.filter === "all"
+          ? (filteredTasksForRender = todoListTasks)
+          : el.filter === "completed"
+          ? (filteredTasksForRender = todoListTasks.filter((el) => el.isDone))
+          : (filteredTasksForRender = todoListTasks.filter((el) => !el.isDone));
+
+        return (
+          <ToDoList
+            key={el.id}
+            id={el.id}
+            title={el.title}
+            filter={el.filter}
+            tasks={filteredTasksForRender}
+            addTask={addTask}
+            removeTaskItem={removeTaskItem}
+            changeFilter={changeFilter}
+            changeTaskStatus={changeTaskStatus}
+            removeTodoList={removeTodoList}
+          />
+        );
+      })}
     </div>
   );
 };

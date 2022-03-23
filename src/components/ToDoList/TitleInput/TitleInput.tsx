@@ -2,8 +2,10 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import classes from "./TitleInput.module.css";
 
 type TitleInputPropsType = {
+  id: string;
   title: string;
-  addTask: (newTask: string) => void;
+  addTask: (newTask: string, todoListID: string) => void;
+  removeTodoList: (todoListID: string) => void;
 };
 
 const TitleInput: React.FC<TitleInputPropsType> = (props) => {
@@ -20,7 +22,7 @@ const TitleInput: React.FC<TitleInputPropsType> = (props) => {
 
     !newTaskTitleTrim.length
       ? setError("Please, input correct task")
-      : props.addTask(newTaskTitleTrim);
+      : props.addTask(newTaskTitleTrim, props.id);
 
     setNewTaskTitle("");
   };
@@ -29,9 +31,14 @@ const TitleInput: React.FC<TitleInputPropsType> = (props) => {
     event.charCode === 13 ? onClickAddTaskButtonHandler() : console.log("null");
   };
 
+  const removeTodoListHandler = () => {
+    props.removeTodoList(props.id);
+  };
+
   return (
     <>
       <h3 className={classes.title}>{props.title}</h3>
+      <button onClick={removeTodoListHandler}>x</button>
       <div>
         <input
           className={error.length ? classes.inputError : ""}

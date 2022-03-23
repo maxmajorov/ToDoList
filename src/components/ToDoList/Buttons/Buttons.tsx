@@ -3,19 +3,21 @@ import { FilterValuesType } from "../../../App";
 import classes from "./Buttons.module.css";
 
 type ButtonsType = {
+  id: string;
   filter: FilterValuesType;
-  changeFilter: (filter: FilterValuesType) => void;
+  changeFilter: (filter: FilterValuesType, todoListID: string) => void;
 };
 
 const Buttons: React.FC<ButtonsType> = (props) => {
-  const onClickAllButton = () => props.changeFilter("all");
-  const onClickActiveButton = () => props.changeFilter("active");
-  const onClickCompletedButton = () => props.changeFilter("completed");
+  const onClickAllButton = () => props.changeFilter("all", props.id);
+  const onClickActiveButton = () => props.changeFilter("active", props.id);
+  const onClickCompletedButton = () =>
+    props.changeFilter("completed", props.id);
 
   return (
     <div className={classes.controls}>
       <button
-        style={props.filter === "all" ? { backgroundColor: "blue" } : {}}
+        style={props.filter === "all" ? { backgroundColor: "aqua" } : {}}
         onClick={onClickAllButton}
       >
         All
