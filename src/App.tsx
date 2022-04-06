@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
-import ToDoList from "../src/components/ToDoList/ToDoList";
+import { ToDoList } from "../src/components/ToDoList/ToDoList";
 import { v1 } from "uuid";
+import { AddItemForm } from "./components/ToDoList/AddItemForm/AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TasksType = {
@@ -17,7 +18,7 @@ type TodoListType = {
 };
 
 type TaskStateType = {
-  [todoListID: string]: Array<TasksType>;
+  [key: string]: Array<TasksType>;
 };
 
 const App = () => {
@@ -26,7 +27,7 @@ const App = () => {
 
   const [todoLists, setTodoLists] = useState<Array<TodoListType>>([
     { id: todoListID_1, title: "What to learn", filter: "all" },
-    { id: todoListID_2, title: "What to buy", filter: "active" },
+    { id: todoListID_2, title: "What to buy", filter: "all" },
   ]);
 
   const [tasksObj, setTasks] = useState<TaskStateType>({
@@ -67,6 +68,21 @@ const App = () => {
     setTasks({ ...tasksObj }); // не мутируя исходник записываем
   };
 
+  const addNewToDoList = (newTodosName: string) => {
+    const todoListID = v1();
+    const newTodoList: TodoListType = {
+      // Создаем новый todolist
+      id: todoListID,
+      title: newTodosName,
+      filter: "all",
+    };
+    setTodoLists([...todoLists, newTodoList]); //Не мутируя исходник добавляем новый
+    setTasks({
+      ...tasksObj,
+      [todoListID]: [],
+    }); //Также не мутируя исходник тасок добавляем новый список тасок который изначально пустой
+  };
+
   const changeTaskStatus = (
     taskID: string,
     isDone: boolean,
@@ -85,6 +101,30 @@ const App = () => {
     setTodoLists(withoutRemoveTodo); //устанавливаем с учетом отвильтрованных листов
     delete tasksObj[todoListID]; //также удаляем задачи для этого листа
     setTasks({ ...tasksObj }); // также установливаем таски заново с учетом удаленных
+  };
+
+  const onChangeTextTaskCallback = (
+    changedTask: string,
+    todoListID: string,
+    taskID: string
+  ) => {
+    const listByTodoListID = tasksObj[todoListID]; //находим по ID нужный todoList
+    const newTaskAfterChangingByTaskID = listByTodoListID.map((task) =>
+      task.id === taskID ? (task.text = changedTask) : task
+    ); //Ищем нужную таску и сразу же ее присваиваем
+    console.log(newTaskAfterChangingByTaskID);
+    setTasks({ ...tasksObj }); // не мутируя исходник записываем
+  };
+
+  const onChangeTodosTitleCallback = (
+    changedTitle: string,
+    todoListID: string
+  ) => {
+    const todoListForChanging = todoLists.map((todoList) =>
+      todoList.id === todoListID ? (todoList.title = changedTitle) : todoList
+    );
+    console.log("changed title", todoListForChanging);
+    setTodoLists([...todoLists]);
   };
 
   const todoListAndTasksForRender = todoLists.map((el) => {
@@ -109,11 +149,22 @@ const App = () => {
         changeFilter={changeFilter}
         changeTaskStatus={changeTaskStatus}
         removeTodoList={removeTodoList}
+        onChangeTextTask={onChangeTextTaskCallback}
+        changeTodoListTitle={onChangeTodosTitleCallback}
       />
     );
   });
 
-  return <div className="App">{todoListAndTasksForRender}</div>;
+  return (
+    <div className="App">
+      <AddItemForm
+        addItem={addNewToDoList}
+        title="Add new ToDoList"
+        changeTodoListTitle={() => {}}
+      />
+      {todoListAndTasksForRender}
+    </div>
+  );
 };
 
 export default App;

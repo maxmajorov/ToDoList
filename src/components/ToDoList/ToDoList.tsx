@@ -1,8 +1,8 @@
 import React from "react";
 import { FilterValuesType, TasksType } from "../../App";
 import Buttons from "./Buttons/Buttons";
-import ListItems from "./ListItems/ListItems";
-import TitleInput from "./TitleInput/TitleInput";
+import { ListItems } from "./ListItems/ListItems";
+import { AddItemForm } from "./AddItemForm/AddItemForm";
 import classes from "./ToDoList.module.css";
 
 type TodoListPropsType = {
@@ -10,7 +10,7 @@ type TodoListPropsType = {
   title: string;
   filter: FilterValuesType;
   tasks: Array<TasksType>;
-  addTask: (newTask: string, todoListID: string) => void;
+  addTask: (newItem: string, id: string) => void;
   removeTaskItem: (taskID: string, todoListID: string) => void;
   changeFilter: (filter: FilterValuesType, todoListID: string) => void;
   changeTaskStatus: (
@@ -19,22 +19,41 @@ type TodoListPropsType = {
     todoListID: string
   ) => void;
   removeTodoList: (todoListID: string) => void;
+  onChangeTextTask: (
+    changedTask: string,
+    todoListID: string,
+    taskID: string
+  ) => void;
+  changeTodoListTitle: (changedTitle: string, todoListID: string) => void;
 };
 
-const ToDoList: React.FC<TodoListPropsType> = (props) => {
+export const ToDoList: React.FC<TodoListPropsType> = (props) => {
+  const removeTodoListHandler = () => {
+    props.removeTodoList(props.id);
+  };
+
+  const addTask = (newItem: string) => {
+    props.addTask(newItem, props.id);
+  };
+
+  const changeTodoListTitleCallback = (changeTitle: string) => {
+    props.changeTodoListTitle(changeTitle, props.id);
+  };
+
   return (
     <div className={classes.wrapper}>
-      <TitleInput
-        id={props.id}
-        addTask={props.addTask}
+      <button onClick={removeTodoListHandler}>x</button>
+      <AddItemForm
+        addItem={addTask}
         title={props.title}
-        removeTodoList={props.removeTodoList}
+        changeTodoListTitle={changeTodoListTitleCallback}
       />
       <ListItems
         id={props.id}
         tasks={props.tasks}
         removeTaskItem={props.removeTaskItem}
         changeTaskStatus={props.changeTaskStatus}
+        onChangeTextTask={props.onChangeTextTask}
       />
 
       {/* Если таски отсутствуют то выводится сообщение (прописано в ListItems) и пропадают кнопки, но есть БАГ???*/}
@@ -48,5 +67,3 @@ const ToDoList: React.FC<TodoListPropsType> = (props) => {
     </div>
   );
 };
-
-export default ToDoList;
