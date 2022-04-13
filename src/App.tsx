@@ -3,6 +3,7 @@ import "./App.css";
 import { ToDoList } from "../src/components/ToDoList/ToDoList";
 import { v1 } from "uuid";
 import { AddItemForm } from "./components/ToDoList/AddItemForm/AddItemForm";
+import { TodoAppBar } from "./components/ToDoList/AppBar/AppBar";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TasksType = {
@@ -156,14 +157,17 @@ const App = () => {
   });
 
   return (
-    <div className="App">
-      <AddItemForm
-        addItem={addNewToDoList}
-        title="Add new ToDoList"
-        changeTodoListTitle={() => {}}
-      />
-      {todoListAndTasksForRender}
-    </div>
+    <>
+      <TodoAppBar />
+      <div className="App">
+        <AddItemForm
+          addItem={addNewToDoList}
+          title="Add new ToDoList"
+          changeTodoListTitle={() => {}}
+        />
+        <div className="todoList-items">{todoListAndTasksForRender}</div>
+      </div>
+    </>
   );
 };
 

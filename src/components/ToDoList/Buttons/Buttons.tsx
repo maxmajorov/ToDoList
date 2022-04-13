@@ -1,3 +1,4 @@
+import { Button } from "@material-ui/core";
 import React from "react";
 import { FilterValuesType } from "../../../App";
 import classes from "./Buttons.module.css";
@@ -16,24 +17,24 @@ const Buttons: React.FC<ButtonsType> = (props) => {
 
   return (
     <div className={classes.controls}>
-      <button
+      <Button
         style={props.filter === "all" ? { backgroundColor: "aqua" } : {}}
         onClick={onClickAllButton}
       >
         All
-      </button>
-      <button
+      </Button>
+      <Button
         style={props.filter === "active" ? { backgroundColor: "red" } : {}}
         onClick={onClickActiveButton}
       >
         Active
-      </button>
-      <button
+      </Button>
+      <Button
         style={props.filter === "completed" ? { backgroundColor: "green" } : {}}
         onClick={onClickCompletedButton}
       >
         Completed
-      </button>
+      </Button>
     </div>
   );
 };

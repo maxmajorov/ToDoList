@@ -1,7 +1,10 @@
+import { IconButton } from "@material-ui/core";
 import React, { ChangeEvent } from "react";
 import { TasksType } from "../../../App";
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import classes from "./ListItems.module.css";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import Checkbox from "@material-ui/core/Checkbox";
 
 type ListItemsPropsType = {
   id: string;
@@ -33,8 +36,8 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
         }`}
       >
         <div>
-          <input
-            type="checkbox"
+          <Checkbox
+            inputProps={{ "aria-label": "primary checkbox" }}
             checked={task.isDone}
             onChange={(event: ChangeEvent<HTMLInputElement>) =>
               props.changeTaskStatus(
@@ -50,11 +53,10 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
             text={task.text}
             changeTextTask={onChangeTextTaskHandler}
           />
-          {/* <span>{task.text}</span> */}
         </div>
-        <button onClick={() => props.removeTaskItem(task.id, props.id)}>
-          x
-        </button>
+        <IconButton onClick={() => props.removeTaskItem(task.id, props.id)}>
+          <DeleteForeverIcon />
+        </IconButton>
       </li>
     );
   });

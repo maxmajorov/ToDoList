@@ -1,6 +1,9 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import classes from "./AddItemForm.module.css";
+import { IconButton } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
+import TextField from "@material-ui/core/TextField";
 
 type AddItemFormPropsType = {
   title: string;
@@ -40,18 +43,26 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = ({
     console.log(changedTodosTitle, newTitle);
   };
   return (
-    <div>
+    <div className={classes.inner}>
       <h3 className={classes.title}>
         <EditableSpan text={title} changeTextTask={onChangeTodoTitleCallBack} />
       </h3>
       <div>
-        <input
+        <TextField
+          id="outlined-textarea"
+          label="New item"
+          placeholder="enter the text"
+          multiline
+          variant="outlined"
           className={error.length ? classes.inputError : ""}
           type="text"
           onChange={onChangeInputHandler}
           onKeyPress={onKeyPressHandler}
+          color={"primary"}
         />
-        <button onClick={onClickAddTaskButtonHandler}>+</button>
+        <IconButton onClick={onClickAddTaskButtonHandler}>
+          <AddIcon style={{ fontSize: 30 }} color={"secondary"} />
+        </IconButton>
         <div className={classes.error}>{error}</div>
       </div>
     </div>

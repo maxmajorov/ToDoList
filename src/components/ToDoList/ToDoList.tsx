@@ -4,6 +4,8 @@ import Buttons from "./Buttons/Buttons";
 import { ListItems } from "./ListItems/ListItems";
 import { AddItemForm } from "./AddItemForm/AddItemForm";
 import classes from "./ToDoList.module.css";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { IconButton } from "@material-ui/core";
 
 type TodoListPropsType = {
   id: string;
@@ -42,7 +44,9 @@ export const ToDoList: React.FC<TodoListPropsType> = (props) => {
 
   return (
     <div className={classes.wrapper}>
-      <button onClick={removeTodoListHandler}>x</button>
+      <IconButton onClick={removeTodoListHandler}>
+        <DeleteForeverIcon />
+      </IconButton>
       <AddItemForm
         addItem={addTask}
         title={props.title}
@@ -55,7 +59,6 @@ export const ToDoList: React.FC<TodoListPropsType> = (props) => {
         changeTaskStatus={props.changeTaskStatus}
         onChangeTextTask={props.onChangeTextTask}
       />
-
       {/* Если таски отсутствуют то выводится сообщение (прописано в ListItems) и пропадают кнопки, но есть БАГ???*/}
       {/* {props.tasks.length ? ( */}
       <Buttons
