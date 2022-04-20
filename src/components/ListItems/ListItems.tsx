@@ -1,10 +1,11 @@
 import { IconButton } from "@material-ui/core";
 import React, { ChangeEvent } from "react";
-import { TasksType } from "../../../App";
+
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import classes from "./ListItems.module.css";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Checkbox from "@material-ui/core/Checkbox";
+import { TasksType } from "../../redux/tasks-reducer";
 
 type ListItemsPropsType = {
   id: string;

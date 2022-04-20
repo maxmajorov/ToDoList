@@ -24,6 +24,8 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = ({
     setError("");
   };
 
+  console.log(newTitle);
+
   const onClickAddTaskButtonHandler = () => {
     const newTitleTrim = newTitle.trim(); //trim - удаляет пробелы по краям
 
