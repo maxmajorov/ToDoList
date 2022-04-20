@@ -1,4 +1,11 @@
 import { v1 } from "uuid";
+import {
+  ActionsType,
+  ADD_NEW_TODOLIST,
+  CHANGE_FILTER,
+  CHANGE_TITLE,
+  REMOVE_TODOLIST,
+} from "../actions/todo-actions";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodoListType = {
@@ -15,133 +22,55 @@ const initialState: Array<TodoListType> = [
   { id: todoListID_2, title: "What to buy", filter: "all" },
 ];
 
-// ===== ACTIONS =====
-const ADD_NEW_TODOLIST = "ADD-NEW-TODOLIST";
-const CHANGE_FILTER = "CHANGE-FILTER";
-const REMOVE_TODOLIST = "REMOVE-TODOLIST";
-const CHANGE_TITLE = "CHANGE_TITLE";
-
-type ActionsType =
-  | AddNewTodoListACType
-  | ChangeFilterACType
-  | RemoveTodoListACType
-  | ChangeTodoListTitleACType;
-
-type AddNewTodoListACType = {
-  type: typeof ADD_NEW_TODOLIST;
-  newItem: string;
-};
-
-type ChangeFilterACType = {
-  type: typeof CHANGE_FILTER;
-  filter: FilterValuesType;
-  todoListID: string;
-};
-
-type RemoveTodoListACType = {
-  type: typeof REMOVE_TODOLIST;
-  todoListID: string;
-};
-
-type ChangeTodoListTitleACType = {
-  type: typeof CHANGE_TITLE;
-  newItem: string;
-  todoListID: string;
-};
-
 export const todoListReducer = (
   state: Array<TodoListType> = initialState,
   action: ActionsType
 ): Array<TodoListType> => {
   switch (action.type) {
     case ADD_NEW_TODOLIST:
-      const todoListID = v1();
+      // const newTodoListID = v1();
       const newTodoList: TodoListType = {
-        // Создаем новый todolist
-        id: todoListID,
+        id: action.newTodoListID,
         title: action.newItem,
         filter: "all",
-      };
-      state = [...state, newTodoList]; //Не мутируя исходник добавляем новый
+      }; // Создаем новый todolist
+      state = [...state, newTodoList];
       return state;
 
-    case REMOVE_TODOLIST:
-    case CHANGE_FILTER:
-    case CHANGE_TITLE:
+    case REMOVE_TODOLIST: {
+      const withoutRemoveTodo = state.filter(
+        (el) => el.id !== action.todoListID
+      ); //фильтруем листы по ID
+      state = [...withoutRemoveTodo];
+      return state;
+    }
+    case CHANGE_FILTER: {
+      // const todoList: Array<TodoListType> = state.map((el) =>
+      //   el.id === action.todoListID ? { ...el, filter: action.filter } : el
+      // );
+
+      return state.map((list) =>
+        list.id === action.todoListID
+          ? { ...list, filter: action.filter }
+          : list
+      );
+    }
+
+    case CHANGE_TITLE: {
+      // const todoListForChanging = state.map((list) =>
+      //   list.id === action.todoListID
+      //     ? { ...list, title: action.changedTitle }
+      //     : list
+      // );
+
+      return state.map((list) =>
+        list.id === action.todoListID
+          ? { ...list, title: action.changedTitle }
+          : list
+      );
+    }
     default: {
       return state;
     }
   }
 };
-
-// const changeFilter = (filter: FilterValuesType, todoListID: string) => {
-//   let todoList = todoLists.find((el) => el.id === todoListID);
-
-//   if (todoList) {
-//     todoList.filter = filter;
-//     setTodoLists([...todoLists]);
-//   }
-// };
-
-// const addNewToDoList = (newTodosName: string) => {
-//   const todoListID = v1();
-//   const newTodoList: TodoListType = {
-//     // Создаем новый todolist
-//     id: todoListID,
-//     title: newTodosName,
-//     filter: "all",
-//   };
-//   setTodoLists([...todoLists, newTodoList]); //Не мутируя исходник добавляем новый
-//   setTasks({
-//     ...tasksObj,
-//     [todoListID]: [],
-//   }); //Также не мутируя исходник тасок добавляем новый список тасок который изначально пустой
-// };
-
-// const removeTodoList = (todoListID: string) => {
-//   const withoutRemoveTodo = todoLists.filter((el) => el.id !== todoListID); //фильтруем листы по ID
-//   setTodoLists(withoutRemoveTodo); //устанавливаем с учетом отвильтрованных листов
-//   delete tasksObj[todoListID]; //также удаляем задачи для этого листа
-//   setTasks({ ...tasksObj }); // также установливаем таски заново с учетом удаленных
-// };
-
-// const onChangeTodosTitleCallback = (
-//   changedTitle: string,
-//   todoListID: string
-// ) => {
-//   const todoListForChanging = todoLists.map((todoList) =>
-//     todoList.id === todoListID ? (todoList.title = changedTitle) : todoList
-//   );
-//   console.log("changed title", todoListForChanging);
-//   setTodoLists([...todoLists]);
-// };
-
-export const addNewTodoListAC = (
-  newTodoListName: string
-): AddNewTodoListACType => ({
-  type: ADD_NEW_TODOLIST,
-  newItem: newTodoListName,
-});
-
-export const changeFilterAC = (
-  todoListID: string,
-  filter: FilterValuesType
-): ChangeFilterACType => ({
-  type: CHANGE_FILTER,
-  todoListID: todoListID,
-  filter: filter,
-});
-
-export const removeTodoListAC = (todoListID: string): RemoveTodoListACType => ({
-  type: REMOVE_TODOLIST,
-  todoListID: todoListID,
-});
-
-export const changeTodoListTitleAC = (
-  changedTitle: string,
-  todoListID: string
-): ChangeTodoListTitleACType => ({
-  type: CHANGE_TITLE,
-  newItem: changedTitle,
-  todoListID: todoListID,
-});

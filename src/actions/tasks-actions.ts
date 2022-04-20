@@ -2,17 +2,24 @@ export const ADD_NEW_TASK = "ADD-NEW-TASK";
 export const REMOVE_TASK = "REMOVE-TASK";
 export const CHANGE_TASK_STATUS = "CHANGE-TASK-STATUS";
 export const CHANGE_TASK_TITLE = "CHANGE-TASK-TITLE";
+export const ADD_EMPTY_ARRAY_TASK = "ADD-EMPTY-ARRAY-TASK";
 
 export type ActionsType =
   | AddNewTaskACType
   | ChangeTaskStatusACType
   | RemoveTaskACType
-  | ChangeTaskTitleACType;
+  | ChangeTaskTitleACType
+  | AddEmptyArrayTaskACType;
 
 type AddNewTaskACType = {
   type: typeof ADD_NEW_TASK;
   newItem: string;
   todoListID: string;
+};
+
+type AddEmptyArrayTaskACType = {
+  type: typeof ADD_EMPTY_ARRAY_TASK;
+  newTodoListID: string;
 };
 
 type ChangeTaskStatusACType = {
@@ -42,6 +49,13 @@ export const addNewTaskAC = (
   type: ADD_NEW_TASK,
   newItem: newTaskName,
   todoListID: todoListID,
+});
+
+export const addEmptyArrayTaskAC = (
+  newTodoListID: string
+): AddEmptyArrayTaskACType => ({
+  type: ADD_EMPTY_ARRAY_TASK,
+  newTodoListID: newTodoListID,
 });
 
 export const changeTaskStatusAC = (

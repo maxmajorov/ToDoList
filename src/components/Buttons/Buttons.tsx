@@ -1,6 +1,6 @@
 import { Button } from "@material-ui/core";
 import React from "react";
-import { FilterValuesType } from "../../../App";
+import { FilterValuesType } from "../../reducers/todoList-reducer";
 import classes from "./Buttons.module.css";
 
 type ButtonsType = {

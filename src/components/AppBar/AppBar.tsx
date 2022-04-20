@@ -23,7 +23,8 @@ export const TodoAppBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            {`${new Date().getHours()} : ${new Date().getMinutes()}
+             ${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`}
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>

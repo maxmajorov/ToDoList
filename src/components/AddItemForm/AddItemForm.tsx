@@ -32,7 +32,6 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = ({
     !newTitleTrim.length
       ? setError("Please, input correct task")
       : addItem(newTitleTrim);
-
     setNewTitle("");
   };
 
@@ -42,7 +41,6 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = ({
 
   const onChangeTodoTitleCallBack = (changedTodosTitle: string) => {
     changeTodoListTitle(changedTodosTitle);
-    console.log(changedTodosTitle, newTitle);
   };
   return (
     <div className={classes.inner}>

@@ -2,6 +2,7 @@ import { v1 } from "uuid";
 import {
   ActionsType,
   ADD_NEW_TASK,
+  ADD_EMPTY_ARRAY_TASK,
   CHANGE_TASK_STATUS,
   CHANGE_TASK_TITLE,
   REMOVE_TASK,
@@ -43,6 +44,11 @@ export const tasksReducer = (
       const addnewTask = { id: v1(), text: action.newItem, isDone: false }; //создаем новую таску
       const newArrayTasks = [addnewTask, ...todoList]; // добавляем новую таску
       state = { ...state, [action.todoListID]: newArrayTasks }; // перезаписываем с учетом новой таски
+      return state;
+    }
+    case ADD_EMPTY_ARRAY_TASK: {
+      state = { ...state, [action.newTodoListID]: [] };
+      console.log(state);
       return state;
     }
     case REMOVE_TASK: {

@@ -32,7 +32,6 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
       event: ChangeEvent<HTMLInputElement>
     ) => {
       props.changeTaskStatus(task.id, event.currentTarget.checked, props.id);
-      console.log(props.id);
     };
 
     const onClickRemoveTaskHandler = () => {

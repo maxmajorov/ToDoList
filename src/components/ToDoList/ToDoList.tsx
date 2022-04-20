@@ -35,7 +35,7 @@ type TodoListPropsType = {
 
 export const ToDoList: React.FC<TodoListPropsType> = (props) => {
   const removeTodoListHandler = () => {
-    // removeTodoListFromStore(props.id);
+    props.removeTodoList(props.id);
   };
 
   const addNewTaskCallback = (newItem: string) => {

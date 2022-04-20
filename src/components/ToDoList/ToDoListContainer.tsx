@@ -4,18 +4,21 @@ import { ToDoList } from "./ToDoList";
 import { StoreContext } from "../../StoreContext";
 import { RootState, store } from "../../store/redux-store";
 import {
-  FilterValuesType,
   addNewTodoListAC,
   changeFilterAC,
   changeTodoListTitleAC,
   removeTodoListAC,
-} from "../../reducers/todoList-reducer";
+} from "../../actions/todo-actions";
 import {
+  addEmptyArrayTaskAC,
   addNewTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
 } from "../../actions/tasks-actions";
+import { AddItemForm } from "../AddItemForm/AddItemForm";
+import { v1 } from "uuid";
+import { FilterValuesType } from "../../reducers/todoList-reducer";
 
 export const ToDoListContainer = () => {
   const todoListsState = useSelector((state: RootState) => state.todoList);
@@ -23,12 +26,12 @@ export const ToDoListContainer = () => {
   return (
     <StoreContext.Consumer>
       {(state) => {
-        // const todoListState = state.getState().todoList;
-
         // ====== FUNCTION FOR CHANGING TODOLIST ======
 
         const addNewTodoListCallback = (newItem: string) => {
-          state.dispatch(addNewTodoListAC(newItem));
+          const newTodoListID = v1();
+          state.dispatch(addNewTodoListAC(newItem, newTodoListID));
+          state.dispatch(addEmptyArrayTaskAC(newTodoListID));
         };
 
         const removeTodoListCallback = (todoListID: string) => {
@@ -36,8 +39,8 @@ export const ToDoListContainer = () => {
         };
 
         const changeFilterCallback = (
-          todoListID: string,
-          filter: FilterValuesType
+          filter: FilterValuesType,
+          todoListID: string
         ) => {
           state.dispatch(changeFilterAC(todoListID, filter));
         };
@@ -110,28 +113,16 @@ export const ToDoListContainer = () => {
           );
         });
         return (
-          <div className="todoList-items">{todoListAndTasksForRender}</div>
+          <>
+            <AddItemForm
+              title=""
+              addItem={addNewTodoListCallback}
+              changeTodoListTitle={() => {}}
+            />
+            <div className="todoList-items">{todoListAndTasksForRender}</div>
+          </>
         );
       }}
     </StoreContext.Consumer>
   );
 };
-
-/* <StoreContext.Consumer>
-  {(state) => {
-    const postsState = state.getState().profileReduser;
-
-    const addNewPostToStoreCallback = (newPost: string) => {
-      state.dispatch(addPostActionCreator(newPost));
-    };
-
-    return (
-      <Posts
-        postsState={postsState}
-        addNewPostToStore={addNewPostToStoreCallback}
-      />
-    );
-  }}
-</StoreContext.Consumer>; */
-
-/* <div className="todoList-items">{todoListAndTasksForRender}</div>; */
