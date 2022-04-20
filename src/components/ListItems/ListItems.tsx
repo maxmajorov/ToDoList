@@ -1,11 +1,10 @@
 import { IconButton } from "@material-ui/core";
 import React, { ChangeEvent } from "react";
-
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import classes from "./ListItems.module.css";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import Checkbox from "@material-ui/core/Checkbox";
-import { TasksType } from "../../redux/tasks-reducer";
+import { TasksType } from "../../reducers/tasks-reducer";
 
 type ListItemsPropsType = {
   id: string;
@@ -29,6 +28,17 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
       props.onChangeTextTask(changedTask, props.id, task.id);
     };
 
+    const onChangeTaskStatusHandler = (
+      event: ChangeEvent<HTMLInputElement>
+    ) => {
+      props.changeTaskStatus(task.id, event.currentTarget.checked, props.id);
+      console.log(props.id);
+    };
+
+    const onClickRemoveTaskHandler = () => {
+      props.removeTaskItem(task.id, props.id);
+    };
+
     return (
       <li
         key={task.id}
@@ -40,13 +50,7 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
           <Checkbox
             inputProps={{ "aria-label": "primary checkbox" }}
             checked={task.isDone}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              props.changeTaskStatus(
-                task.id,
-                event.currentTarget.checked,
-                props.id
-              )
-            }
+            onChange={onChangeTaskStatusHandler}
             //кроме id передаем и isDone.тк функци не знает что сидит в isDone.
             //так тоже работает onClick={() => props.changeTaskStatus(task.id, task.isDone)}
           />
@@ -55,7 +59,7 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
             changeTextTask={onChangeTextTaskHandler}
           />
         </div>
-        <IconButton onClick={() => props.removeTaskItem(task.id, props.id)}>
+        <IconButton onClick={onClickRemoveTaskHandler}>
           <DeleteForeverIcon />
         </IconButton>
       </li>

@@ -4,13 +4,18 @@ import "./index.css";
 import { App } from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { store } from "./redux/redux-store";
+import { store } from "./store/redux-store";
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
+const render = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById("root")
+  );
+};
 
+store.subscribe(render);
+
+render();
 serviceWorker.unregister();

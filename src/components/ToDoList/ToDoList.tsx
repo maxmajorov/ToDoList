@@ -5,8 +5,8 @@ import { IconButton } from "@material-ui/core";
 import { AddItemForm } from "../AddItemForm/AddItemForm";
 import { ListItems } from "../ListItems/ListItems";
 import Buttons from "../Buttons/Buttons";
-import { TasksType } from "../../redux/tasks-reducer";
-import { FilterValuesType } from "../../redux/todoList-reducer";
+import { TasksType } from "../../reducers/tasks-reducer";
+import { FilterValuesType } from "../../reducers/todoList-reducer";
 
 type TodoListPropsType = {
   id: string;

@@ -2,24 +2,24 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { ToDoList } from "./ToDoList";
 import { StoreContext } from "../../StoreContext";
-import { RootState, store } from "../../redux/redux-store";
+import { RootState, store } from "../../store/redux-store";
 import {
   FilterValuesType,
   addNewTodoListAC,
   changeFilterAC,
   changeTodoListTitleAC,
   removeTodoListAC,
-} from "../../redux/todoList-reducer";
+} from "../../reducers/todoList-reducer";
 import {
   addNewTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
-} from "../../redux/tasks-reducer";
+} from "../../actions/tasks-actions";
 
 export const ToDoListContainer = () => {
   const todoListsState = useSelector((state: RootState) => state.todoList);
-  console.log(todoListsState);
+
   return (
     <StoreContext.Consumer>
       {(state) => {
@@ -53,8 +53,6 @@ export const ToDoListContainer = () => {
 
         const addTaskCallback = (newTaskName: string, todoListID: string) => {
           state.dispatch(addNewTaskAC(newTaskName, todoListID));
-
-          console.log(newTaskName, todoListID);
         };
 
         const removeTaskItemCallback = (taskID: string, todoListID: string) => {
@@ -62,11 +60,11 @@ export const ToDoListContainer = () => {
         };
 
         const changeTaskStatusCallback = (
-          todoListID: string,
           taskID: string,
-          isDone: boolean
+          isDone: boolean,
+          todoListID: string
         ) => {
-          state.dispatch(changeTaskStatusAC(taskID, todoListID, isDone));
+          state.dispatch(changeTaskStatusAC(taskID, isDone, todoListID));
         };
 
         const changeTextTaskCallback = (
@@ -75,7 +73,7 @@ export const ToDoListContainer = () => {
           taskID: string
         ) => {
           state.dispatch(
-            changeTaskTitleAC(taskID, todoListID, changedTaskName)
+            changeTaskTitleAC(changedTaskName, todoListID, taskID)
           );
         };
 

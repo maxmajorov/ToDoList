@@ -1,7 +1,8 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { tasksReducer } from "./tasks-reducer";
-import { taskSlice } from "./tasksSlice";
-import { todoListReducer } from "./todoList-reducer";
+import { tasksReducer } from "../reducers/tasks-reducer";
+import { todoListReducer } from "../reducers/todoList-reducer";
+
+// import { taskSlice } from "./tasksSlice";
 
 // ======Создаем Store======
 // У Store уже есть методы getState, dispatch
