@@ -6,33 +6,10 @@ export const CHANGE_FILTER = "CHANGE-FILTER";
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const CHANGE_TITLE = "CHANGE_TITLE";
 
-export type ActionsType =
-  | AddNewTodoListACType
-  | ChangeFilterACType
-  | RemoveTodoListACType
-  | ChangeTodoListTitleACType;
-
 type AddNewTodoListACType = {
   type: typeof ADD_NEW_TODOLIST;
   newItem: string;
   newTodoListID: string;
-};
-
-type ChangeFilterACType = {
-  type: typeof CHANGE_FILTER;
-  filter: FilterValuesType;
-  todoListID: string;
-};
-
-type RemoveTodoListACType = {
-  type: typeof REMOVE_TODOLIST;
-  todoListID: string;
-};
-
-type ChangeTodoListTitleACType = {
-  type: typeof CHANGE_TITLE;
-  changedTitle: string;
-  todoListID: string;
 };
 
 export const addNewTodoListAC = (
@@ -44,6 +21,12 @@ export const addNewTodoListAC = (
   newTodoListID: newTodoListID,
 });
 
+type ChangeFilterACType = {
+  type: typeof CHANGE_FILTER;
+  filter: FilterValuesType;
+  todoListID: string;
+};
+
 export const changeFilterAC = (
   todoListID: string,
   filter: FilterValuesType
@@ -53,10 +36,21 @@ export const changeFilterAC = (
   todoListID: todoListID,
 });
 
+type RemoveTodoListACType = {
+  type: typeof REMOVE_TODOLIST;
+  todoListID: string;
+};
+
 export const removeTodoListAC = (todoListID: string): RemoveTodoListACType => ({
   type: REMOVE_TODOLIST,
   todoListID: todoListID,
 });
+
+type ChangeTodoListTitleACType = {
+  type: typeof CHANGE_TITLE;
+  changedTitle: string;
+  todoListID: string;
+};
 
 export const changeTodoListTitleAC = (
   changedTitle: string,
@@ -66,3 +60,9 @@ export const changeTodoListTitleAC = (
   changedTitle: changedTitle,
   todoListID: todoListID,
 });
+
+export type ActionsType =
+  | AddNewTodoListACType
+  | ChangeFilterACType
+  | RemoveTodoListACType
+  | ChangeTodoListTitleACType;

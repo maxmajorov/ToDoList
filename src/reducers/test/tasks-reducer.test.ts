@@ -2,6 +2,7 @@ import React from "react";
 import { v1 } from "uuid";
 import { tasksReducer, TaskStateType } from "../tasks-reducer";
 import {
+  addEmptyArrayTaskAC,
   addNewTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
@@ -121,4 +122,37 @@ test("correct task should be changed status", () => {
   const endState = tasksReducer(startState, action);
 
   expect(endState[todoListID_1][1].isDone).toBe(true);
+});
+
+test("new empty array should be add when todoList add", () => {
+  let todoListID_1 = v1();
+  let todoListID_2 = v1();
+  let todoListID_3 = v1();
+
+  let startState: TaskStateType = {
+    [todoListID_1]: [
+      { id: "1", text: "HTML", isDone: true },
+      { id: "2", text: "React", isDone: false },
+      { id: "3", text: "TypeScript", isDone: false },
+    ],
+    [todoListID_2]: [
+      { id: "1", text: "Milk", isDone: true },
+      { id: "2", text: "Bread", isDone: true },
+      { id: "3", text: "Salt", isDone: false },
+    ],
+  };
+  const action = addEmptyArrayTaskAC(todoListID_3);
+  const endState = tasksReducer(startState, action);
+
+  const keys = Object.keys(endState);
+  const newKey = keys.find(
+    (key) => key !== todoListID_1 && key !== todoListID_2
+  );
+
+  if (!newKey) {
+    throw Error("New key should be added!");
+  }
+
+  expect(keys.length).toBe(3);
+  expect(endState[newKey]).toEqual([]);
 });

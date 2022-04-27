@@ -48,7 +48,7 @@ export const tasksReducer = (
     }
     case ADD_EMPTY_ARRAY_TASK: {
       state = { ...state, [action.newTodoListID]: [] };
-      console.log(state);
+
       return state;
     }
     case REMOVE_TASK: {
