@@ -4,42 +4,10 @@ export const CHANGE_TASK_STATUS = "CHANGE-TASK-STATUS";
 export const CHANGE_TASK_TITLE = "CHANGE-TASK-TITLE";
 export const ADD_EMPTY_ARRAY_TASK = "ADD-EMPTY-ARRAY-TASK";
 
-export type ActionsType =
-  | AddNewTaskACType
-  | ChangeTaskStatusACType
-  | RemoveTaskACType
-  | ChangeTaskTitleACType
-  | AddEmptyArrayTaskACType;
-
 type AddNewTaskACType = {
   type: typeof ADD_NEW_TASK;
   newItem: string;
   todoListID: string;
-};
-
-type AddEmptyArrayTaskACType = {
-  type: typeof ADD_EMPTY_ARRAY_TASK;
-  newTodoListID: string;
-};
-
-type ChangeTaskStatusACType = {
-  type: typeof CHANGE_TASK_STATUS;
-  taskID: string;
-  isDone: boolean;
-  todoListID: string;
-};
-
-type RemoveTaskACType = {
-  type: typeof REMOVE_TASK;
-  taskID: string;
-  todoListID: string;
-};
-
-type ChangeTaskTitleACType = {
-  type: typeof CHANGE_TASK_TITLE;
-  changedTaskName: string;
-  todoListID: string;
-  taskID: string;
 };
 
 export const addNewTaskAC = (
@@ -51,12 +19,24 @@ export const addNewTaskAC = (
   todoListID: todoListID,
 });
 
+type AddEmptyArrayTaskACType = {
+  type: typeof ADD_EMPTY_ARRAY_TASK;
+  newTodoListID: string;
+};
+
 export const addEmptyArrayTaskAC = (
   newTodoListID: string
 ): AddEmptyArrayTaskACType => ({
   type: ADD_EMPTY_ARRAY_TASK,
   newTodoListID: newTodoListID,
 });
+
+type ChangeTaskStatusACType = {
+  type: typeof CHANGE_TASK_STATUS;
+  taskID: string;
+  isDone: boolean;
+  todoListID: string;
+};
 
 export const changeTaskStatusAC = (
   taskID: string,
@@ -69,6 +49,12 @@ export const changeTaskStatusAC = (
   todoListID: todoListID,
 });
 
+type RemoveTaskACType = {
+  type: typeof REMOVE_TASK;
+  taskID: string;
+  todoListID: string;
+};
+
 export const removeTaskAC = (
   taskID: string,
   todoListID: string
@@ -77,6 +63,13 @@ export const removeTaskAC = (
   taskID: taskID,
   todoListID: todoListID,
 });
+
+type ChangeTaskTitleACType = {
+  type: typeof CHANGE_TASK_TITLE;
+  changedTaskName: string;
+  todoListID: string;
+  taskID: string;
+};
 
 export const changeTaskTitleAC = (
   changedTaskName: string,
@@ -88,3 +81,10 @@ export const changeTaskTitleAC = (
   todoListID: todoListID,
   taskID: taskID,
 });
+
+export type ActionsType =
+  | AddNewTaskACType
+  | ChangeTaskStatusACType
+  | RemoveTaskACType
+  | ChangeTaskTitleACType
+  | AddEmptyArrayTaskACType;

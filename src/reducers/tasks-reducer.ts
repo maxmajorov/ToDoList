@@ -16,7 +16,7 @@ export type TasksType = {
   isDone: boolean;
 };
 
-type TaskStateType = {
+export type TaskStateType = {
   [key: string]: Array<TasksType>;
 };
 
@@ -77,7 +77,6 @@ export const tasksReducer = (
       ); //Ищем нужную таску и сразу же ее присваиваем
       state = { ...state, [action.todoListID]: taskAfterChanging };
       console.log(state);
-      //   setTasks({ ...tasksObj }); // не мутируя исходник записываем
       return state;
     }
 
