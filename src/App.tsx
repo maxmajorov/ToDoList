@@ -9,11 +9,6 @@ export const App = () => {
     <>
       <TodoAppBar />
       <div className="App">
-        {/* <AddItemForm
-          title=""
-          addItem={() => {}}
-          changeTodoListTitle={() => {}}
-        /> */}
         <ToDoListContainer />
       </div>
     </>
