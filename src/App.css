@@ -2,11 +2,7 @@
   padding: 40px 0 0 50px;
   }
 
-.todoList-items {
-  display: flex;
-  margin-top: 50px;
-}
 
-.todoList-items  > div {
+/* .todoList-items  > div {
   margin-right: 70px;
-}
+} */

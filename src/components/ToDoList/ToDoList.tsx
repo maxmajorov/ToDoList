@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import classes from "./ToDoList.module.css";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { IconButton } from "@material-ui/core";
@@ -7,6 +7,7 @@ import { ListItems } from "../ListItems/ListItems";
 import Buttons from "../Buttons/Buttons";
 import { TasksType } from "../../reducers/tasks-reducer";
 import { FilterValuesType } from "../../reducers/todoList-reducer";
+import { EditableSpan } from "../EditableSpan/EditableSpan";
 
 type TodoListPropsType = {
   id: string;
@@ -33,29 +34,34 @@ type TodoListPropsType = {
   ) => void;
 };
 
-export const ToDoList: React.FC<TodoListPropsType> = (props) => {
+export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
   const removeTodoListHandler = () => {
     props.removeTodoList(props.id);
   };
 
-  const addNewTaskCallback = (newItem: string) => {
-    props.addNewTask(newItem, props.id);
-  };
+  const addNewTaskCallback = useCallback(
+    (newItem: string) => {
+      props.addNewTask(newItem, props.id);
+    },
+    [props] // нужно деструктурировать
+  );
 
-  const changeTodoListTitleCallback = (changeTitle: string) => {
-    props.changeTodoListTitle(changeTitle, props.id);
-  };
+  const changeTodolistTitle = useCallback(
+    (changeTitle: string) => {
+      props.changeTodoListTitle(changeTitle, props.id);
+    },
+    [props]
+  );
 
   return (
     <div className={classes.wrapper}>
+      <h3 className={classes.title}>
+        <EditableSpan text={props.title} onChange={changeTodolistTitle} />
+      </h3>
       <IconButton onClick={removeTodoListHandler}>
         <DeleteForeverIcon />
       </IconButton>
-      <AddItemForm
-        addItem={addNewTaskCallback}
-        title={props.title}
-        changeTodoListTitle={changeTodoListTitleCallback}
-      />
+      <AddItemForm addItem={addNewTaskCallback} />
       <ListItems
         id={props.id}
         tasks={props.tasks}
@@ -73,4 +79,4 @@ export const ToDoList: React.FC<TodoListPropsType> = (props) => {
       {/* ) : null} */}
     </div>
   );
-};
+});

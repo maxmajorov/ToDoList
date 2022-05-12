@@ -53,10 +53,7 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
             //кроме id передаем и isDone.тк функци не знает что сидит в isDone.
             //так тоже работает onClick={() => props.changeTaskStatus(task.id, task.isDone)}
           />
-          <EditableSpan
-            text={task.text}
-            changeTextTask={onChangeTextTaskHandler}
-          />
+          <EditableSpan text={task.text} onChange={onChangeTextTaskHandler} />
         </div>
         <IconButton onClick={onClickRemoveTaskHandler}>
           <DeleteForeverIcon />

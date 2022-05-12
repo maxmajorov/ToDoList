@@ -13,7 +13,7 @@ export const TodoAppBar = () => {
   return (
     <div className={classes.grow}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar className={classes.toolBar}>
           <IconButton
             edge="start"
             className={classes.menuButton}
@@ -22,9 +22,8 @@ export const TodoAppBar = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            {`${new Date().getHours()} : ${new Date().getMinutes()}
-             ${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`}
+          <Typography variant="h6" className={classes.time}>
+            {new Date().toLocaleString()}
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>

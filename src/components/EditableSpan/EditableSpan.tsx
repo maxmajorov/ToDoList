@@ -1,14 +1,14 @@
 import React, { ChangeEvent, FocusEvent, MouseEvent, useState } from "react";
-import classes from "./EditableSpan.module.css";
+// import classes from "./EditableSpan.module.css";
 
 type EditableSpanPropsType = {
   text: string;
-  changeTextTask: (changedTask: string) => void;
+  onChange: (changedTask: string) => void;
 };
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = ({
   text,
-  changeTextTask,
+  onChange,
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
@@ -22,7 +22,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = ({
 
   const disactivateEditMode = (event: FocusEvent<HTMLInputElement>) => {
     setEditMode(false);
-    changeTextTask(title);
+    onChange(title);
   };
 
   const onChangeTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
