@@ -35,6 +35,7 @@ type TodoListPropsType = {
 };
 
 export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
+  console.log("todolist");
   const removeTodoListHandler = () => {
     props.removeTodoList(props.id);
   };
@@ -43,7 +44,7 @@ export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
     (newItem: string) => {
       props.addNewTask(newItem, props.id);
     },
-    [props] // нужно деструктурировать
+    [props.addNewTask, props.id] // нужно деструктурировать
   );
 
   const changeTodolistTitle = useCallback(
@@ -52,6 +53,16 @@ export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
     },
     [props]
   );
+
+  let filteredTasksForRender = props.tasks;
+  // фильтрацию производим в компоненте, чтоб завязать на props и
+  // соответственно можно оптимизировать контролируя изменение props
+
+  props.filter === "all"
+    ? (filteredTasksForRender = props.tasks)
+    : props.filter === "completed"
+    ? (filteredTasksForRender = props.tasks.filter((el) => el.isDone))
+    : (filteredTasksForRender = props.tasks.filter((el) => !el.isDone));
 
   return (
     <div className={classes.wrapper}>
@@ -64,7 +75,7 @@ export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
       <AddItemForm addItem={addNewTaskCallback} />
       <ListItems
         id={props.id}
-        tasks={props.tasks}
+        tasks={filteredTasksForRender}
         removeTaskItem={props.removeTaskItem}
         changeTaskStatus={props.changeTaskStatus}
         onChangeTextTask={props.changeTextTask}

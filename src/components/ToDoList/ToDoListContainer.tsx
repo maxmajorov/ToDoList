@@ -88,13 +88,6 @@ export const ToDoListContainer = () => {
 
   const todoListAndTasksForRender = todoListsState.map((el) => {
     let todoListTasks = store.getState().task[el.id]; // присваиваем тот или туду лист в зависимости от id
-    let filteredTasksForRender = todoListTasks;
-
-    el.filter === "all"
-      ? (filteredTasksForRender = todoListTasks)
-      : el.filter === "completed"
-      ? (filteredTasksForRender = todoListTasks.filter((el) => el.isDone))
-      : (filteredTasksForRender = todoListTasks.filter((el) => !el.isDone));
 
     return (
       <Grid item key={el.id}>
@@ -103,7 +96,7 @@ export const ToDoListContainer = () => {
           id={el.id}
           title={el.title}
           filter={el.filter}
-          tasks={filteredTasksForRender}
+          tasks={todoListTasks}
           // ==== lists ====
           addNewTodoList={addNewTodoListCallback}
           removeTodoList={removeTodoListCallback}

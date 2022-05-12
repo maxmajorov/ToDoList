@@ -22,7 +22,7 @@ type ListItemsPropsType = {
   ) => void;
 };
 
-export const ListItems: React.FC<ListItemsPropsType> = (props) => {
+export const ListItems: React.FC<ListItemsPropsType> = React.memo((props) => {
   const listItems = props.tasks.map((task) => {
     const onChangeTextTaskHandler = (changedTask: string) => {
       props.onChangeTextTask(changedTask, props.id, task.id);
@@ -67,4 +67,4 @@ export const ListItems: React.FC<ListItemsPropsType> = (props) => {
     <span>No available todoes items</span>
   );
   //Условный рендеринг, если невыполнены таски то выводим сообщение
-};
+});

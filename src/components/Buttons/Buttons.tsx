@@ -1,5 +1,5 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useCallback } from "react";
 import { FilterValuesType } from "../../reducers/todoList-reducer";
 import classes from "./Buttons.module.css";
 
@@ -9,28 +9,36 @@ type ButtonsType = {
   changeFilter: (filter: FilterValuesType, todoListID: string) => void;
 };
 
-const Buttons: React.FC<ButtonsType> = (props) => {
-  const onClickAllButton = () => props.changeFilter("all", props.id);
-  const onClickActiveButton = () => props.changeFilter("active", props.id);
-  const onClickCompletedButton = () =>
-    props.changeFilter("completed", props.id);
+const Buttons: React.FC<ButtonsType> = ({ id, filter, changeFilter }) => {
+  const onClickAllButton = useCallback(
+    () => changeFilter("all", id),
+    [changeFilter, id]
+  );
+  const onClickActiveButton = useCallback(
+    () => changeFilter("active", id),
+    [changeFilter, id]
+  );
+  const onClickCompletedButton = useCallback(
+    () => changeFilter("completed", id),
+    [changeFilter, id]
+  );
 
   return (
     <div className={classes.controls}>
       <Button
-        style={props.filter === "all" ? { backgroundColor: "aqua" } : {}}
+        style={filter === "all" ? { backgroundColor: "aqua" } : {}}
         onClick={onClickAllButton}
       >
         All
       </Button>
       <Button
-        style={props.filter === "active" ? { backgroundColor: "red" } : {}}
+        style={filter === "active" ? { backgroundColor: "red" } : {}}
         onClick={onClickActiveButton}
       >
         Active
       </Button>
       <Button
-        style={props.filter === "completed" ? { backgroundColor: "green" } : {}}
+        style={filter === "completed" ? { backgroundColor: "green" } : {}}
         onClick={onClickCompletedButton}
       >
         Completed
