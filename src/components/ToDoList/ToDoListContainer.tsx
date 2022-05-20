@@ -1,28 +1,27 @@
 import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToDoList } from "./ToDoList";
-import { RootStateType } from "../../store/redux-store";
+import { RootStateType } from "../../store/store";
 import {
   addNewTodoListAC,
   changeFilterAC,
   changeTodoListTitleAC,
   removeTodoListAC,
-} from "../../actions/todo-actions";
-import {
   addEmptyArrayTaskAC,
   addNewTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
-} from "../../actions/tasks-actions";
+} from "../../store/actions/index";
+
 import { AddItemForm } from "../AddItemForm/AddItemForm";
 import { v1 } from "uuid";
 import {
   FilterValuesType,
   TodoListType,
-} from "../../reducers/todoList-reducer";
+} from "../../store/reducers/todoList-reducer";
 import { Grid } from "@material-ui/core";
-import { TaskStateType } from "../../reducers/tasks-reducer";
+import { TaskStateType } from "../../store/reducers/tasks-reducer";
 
 export const ToDoListContainer = () => {
   const todolistsState = useSelector<RootStateType, Array<TodoListType>>(

@@ -2,8 +2,8 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { ListItems } from "./ListItems";
-import { todoListID_1 } from "../../reducers/todoList-reducer";
 import { v1 } from "uuid";
+import { todoListID_1 } from "../../store/reducers/todoList-reducer";
 
 export default {
   title: "TodoList/ListItems",
