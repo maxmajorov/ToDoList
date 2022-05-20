@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToDoList } from "./ToDoList";
-import { RootState, store } from "../../store/redux-store";
+import { RootStateType } from "../../store/redux-store";
 import {
   addNewTodoListAC,
   changeFilterAC,
@@ -17,11 +17,20 @@ import {
 } from "../../actions/tasks-actions";
 import { AddItemForm } from "../AddItemForm/AddItemForm";
 import { v1 } from "uuid";
-import { FilterValuesType } from "../../reducers/todoList-reducer";
+import {
+  FilterValuesType,
+  TodoListType,
+} from "../../reducers/todoList-reducer";
 import { Grid } from "@material-ui/core";
+import { TaskStateType } from "../../reducers/tasks-reducer";
 
 export const ToDoListContainer = () => {
-  const todoListsState = useSelector((state: RootState) => state.todoList);
+  const todolistsState = useSelector<RootStateType, Array<TodoListType>>(
+    (state) => state.todoList
+  );
+  const tasksState = useSelector<RootStateType, TaskStateType>(
+    (state) => state.task
+  );
   const dispatch = useDispatch();
 
   // ====== FUNCTION FOR CHANGING TODOLIST ======
@@ -86,8 +95,8 @@ export const ToDoListContainer = () => {
     [dispatch]
   );
 
-  const todoListAndTasksForRender = todoListsState.map((el) => {
-    let todoListTasks = store.getState().task[el.id]; // присваиваем тот или туду лист в зависимости от id
+  const todoListAndTasksForRender = todolistsState.map((el) => {
+    let todoListTasks = tasksState[el.id]; // присваиваем тот или туду лист в зависимости от id
 
     return (
       <Grid item key={el.id}>

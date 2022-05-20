@@ -5,6 +5,7 @@ export const ADD_NEW_TODOLIST = "ADD-NEW-TODOLIST";
 export const CHANGE_FILTER = "CHANGE-FILTER";
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const CHANGE_TITLE = "CHANGE_TITLE";
+export const DROP_LIST = "DROP-LIST";
 
 type AddNewTodoListACType = {
   type: typeof ADD_NEW_TODOLIST;
@@ -61,8 +62,20 @@ export const changeTodoListTitleAC = (
   todoListID: todoListID,
 });
 
+type DropListACType = {
+  type: typeof DROP_LIST;
+
+  todoListID: string;
+};
+
+export const dropListAC = (todoListID: string): DropListACType => ({
+  type: DROP_LIST,
+  todoListID: todoListID,
+});
+
 export type ActionsType =
   | AddNewTodoListACType
   | ChangeFilterACType
   | RemoveTodoListACType
-  | ChangeTodoListTitleACType;
+  | ChangeTodoListTitleACType
+  | DropListACType;

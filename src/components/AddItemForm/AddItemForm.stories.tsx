@@ -22,3 +22,7 @@ export const AddItemFormStory = Template.bind({});
 AddItemFormStory.args = {
   addItem: action("Button inside form clicked"),
 };
+
+export const AddItemFormTest = () => {
+  return <AddItemForm addItem={(title: string) => alert(title)} />;
+};

@@ -43,24 +43,19 @@ export const tasksReducer = (
       const todoList = state[action.todoListID]; //находим по ID нужный todoList
       const addnewTask = { id: v1(), text: action.newItem, isDone: false }; //создаем новую таску
       const newArrayTasks = [addnewTask, ...todoList]; // добавляем новую таску
-      state = { ...state, [action.todoListID]: newArrayTasks }; // перезаписываем с учетом новой таски
-      return state;
+      return { ...state, [action.todoListID]: newArrayTasks }; // перезаписываем с учетом новой таски
     }
     case ADD_EMPTY_ARRAY_TASK: {
-      state = { ...state, [action.newTodoListID]: [] };
-
-      return state;
+      return { ...state, [action.newTodoListID]: [] };
     }
     case REMOVE_TASK: {
       const todoList = state[action.todoListID]; //находим по ID нужный todoList
       const filteredTasks = todoList.filter((el) => el.id !== action.taskID); // фильтруем его
       // перезаписываем state отфильтрованными тасками
-      state = { ...state, [action.todoListID]: filteredTasks };
-      return state;
+      return { ...state, [action.todoListID]: filteredTasks };
     }
 
     case CHANGE_TASK_STATUS: {
-      // debugger;
       const todoList = state[action.todoListID]; //находим по ID нужный todoList
       const changedStatustask = todoList.map(
         (el) => (el.id === action.taskID ? { ...el, isDone: !el.isDone } : el) // перезаписываем с учетом нового статуса таски
@@ -76,7 +71,6 @@ export const tasksReducer = (
           : task
       ); //Ищем нужную таску и сразу же ее присваиваем
       state = { ...state, [action.todoListID]: taskAfterChanging };
-      console.log(state);
       return state;
     }
 

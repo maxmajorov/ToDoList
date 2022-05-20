@@ -35,7 +35,8 @@ type TodoListPropsType = {
 };
 
 export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
-  console.log("todolist");
+  console.log("todolist", props);
+
   const removeTodoListHandler = () => {
     props.removeTodoList(props.id);
   };

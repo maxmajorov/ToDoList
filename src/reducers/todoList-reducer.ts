@@ -4,6 +4,7 @@ import {
   ADD_NEW_TODOLIST,
   CHANGE_FILTER,
   CHANGE_TITLE,
+  // DROP_LIST,
   REMOVE_TODOLIST,
 } from "../actions/todo-actions";
 
@@ -69,6 +70,7 @@ export const todoListReducer = (
           : list
       );
     }
+
     default: {
       return state;
     }
