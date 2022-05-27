@@ -6,7 +6,7 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
-// ==== USERS ====
+// ==== TODO ====
 
 export const todoAPI = {
   getTodolists() {
@@ -55,5 +55,70 @@ type TodolistType = {
 
 type updatePayloadType = {
   todolistId: string;
+  title: string;
+};
+
+// ==== TASKS ====
+
+export const taskAPI = {
+  getTasks(todolistId: string) {
+    return instance.get<TaskType>(`/todo-lists/${todolistId}/tasks`);
+  },
+
+  createTask(payload: updatePayloadType) {
+    return instance.post<BaseTaskResponseType>(
+      `/todo-lists/${payload.todolistId}/tasks`,
+      {
+        title: payload.title,
+      }
+    );
+  },
+
+  deleteTask(payload: deleteTaskPayloadType) {
+    return instance.delete<BaseTaskResponseType>(
+      `/todo-lists/${payload.todolistId}/tasks/${payload.taskId}`
+    );
+  },
+
+  updateTaskTitle(payload: updateTaskTitlePayloadType) {
+    return instance.put<BaseTaskResponseType>(
+      `/todo-lists/${payload.todolistId}/tasks/${payload.taskId}`,
+      {
+        title: payload.title,
+      }
+    );
+  },
+};
+
+// ==== TYPES ====
+
+type BaseTaskResponseType<T = {}> = {
+  fieldsErrors: Array<string>;
+  messages: Array<string>;
+  resultCode: number;
+  data: T;
+};
+
+type TaskType = {
+  addedDate: string;
+  deadline: null;
+  description: null;
+  id: string;
+  order: number;
+  priority: 1;
+  startDate: number;
+  status: 0;
+  title: string;
+  todoListId: string;
+};
+
+type deleteTaskPayloadType = {
+  todolistId: string;
+  taskId: string;
+};
+
+type updateTaskTitlePayloadType = {
+  todolistId: string;
+  taskId: string;
   title: string;
 };
