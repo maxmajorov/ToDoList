@@ -1,8 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToDoList } from "./ToDoList";
 import { RootStateType } from "../../store/store";
 import {
+  setTasksAC,
+  setTodosAC,
   addNewTodoListAC,
   changeFilterAC,
   changeTodoListTitleAC,
@@ -16,21 +18,24 @@ import {
 
 import { AddItemForm } from "../AddItemForm/AddItemForm";
 import { v1 } from "uuid";
-import {
-  FilterValuesType,
-  TodoListType,
-} from "../../store/reducers/todoList-reducer";
+import { FilterValuesType } from "../../store/reducers/todoList-reducer";
 import { Grid } from "@material-ui/core";
-import { TaskStateType } from "../../store/reducers/tasks-reducer";
+import { taskAPI, todoAPI } from "../../api/api";
+import { Dialpad } from "@material-ui/icons";
+import { getTodoListsThunkCreator } from "../../store/thunks";
 
 export const ToDoListContainer = () => {
-  const todolistsState = useSelector<RootStateType, Array<TodoListType>>(
-    (state) => state.todoList
+  const todolistsState = useSelector(
+    (state: RootStateType) => state.todoList.todos
   );
-  const tasksState = useSelector<RootStateType, TaskStateType>(
-    (state) => state.task
-  );
+  const tasksState = useSelector((state: RootStateType) => state.task);
   const dispatch = useDispatch();
+
+  // Download todolists from server
+
+  useEffect(() => {
+    dispatch(getTodoListsThunkCreator()); // ????
+  }, [dispatch]);
 
   // ====== FUNCTION FOR CHANGING TODOLIST ======
 
@@ -104,7 +109,8 @@ export const ToDoListContainer = () => {
           id={el.id}
           title={el.title}
           filter={el.filter}
-          tasks={todoListTasks}
+          // tasks={todoListTasks}
+          tasks={[]}
           // ==== lists ====
           addNewTodoList={addNewTodoListCallback}
           removeTodoList={removeTodoListCallback}

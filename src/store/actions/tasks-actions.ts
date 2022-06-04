@@ -1,8 +1,27 @@
+import { TasksType } from "../../api/api";
+import { SetTodosACType } from "./todo-actions";
+
+export const SET_TASKS = "SET-TASKS";
 export const ADD_NEW_TASK = "ADD-NEW-TASK";
 export const REMOVE_TASK = "REMOVE-TASK";
 export const CHANGE_TASK_STATUS = "CHANGE-TASK-STATUS";
 export const CHANGE_TASK_TITLE = "CHANGE-TASK-TITLE";
 export const ADD_EMPTY_ARRAY_TASK = "ADD-EMPTY-ARRAY-TASK";
+
+type SetTasksACType = {
+  type: typeof SET_TASKS;
+  tasks: Array<TasksType>;
+  todoListID: string;
+};
+
+export const setTasksAC = (
+  tasks: Array<TasksType>,
+  todoListID: string
+): SetTasksACType => ({
+  type: SET_TASKS,
+  tasks: tasks,
+  todoListID: todoListID,
+});
 
 type AddNewTaskACType = {
   type: typeof ADD_NEW_TASK;
@@ -83,8 +102,10 @@ export const changeTaskTitleAC = (
 });
 
 export type ActionsType =
+  | SetTasksACType
   | AddNewTaskACType
   | ChangeTaskStatusACType
   | RemoveTaskACType
   | ChangeTaskTitleACType
-  | AddEmptyArrayTaskACType;
+  | AddEmptyArrayTaskACType
+  | SetTodosACType;

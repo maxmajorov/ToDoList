@@ -10,7 +10,7 @@ export const instance = axios.create({
 
 export const todoAPI = {
   getTodolists() {
-    return instance.get<TodolistType>("/todo-lists");
+    return instance.get<Array<TodolistType>>("/todo-lists");
   },
 
   createTodolist() {
@@ -46,7 +46,7 @@ type CommonResponseType<T = {}> = {
   data: T;
 };
 
-type TodolistType = {
+export type TodolistType = {
   id: string;
   addedDate: string;
   order: number;
@@ -62,7 +62,7 @@ type updatePayloadType = {
 
 export const taskAPI = {
   getTasks(todolistId: string) {
-    return instance.get<TaskType>(`/todo-lists/${todolistId}/tasks`);
+    return instance.get<TasksResponseType>(`/todo-lists/${todolistId}/tasks`);
   },
 
   createTask(payload: updatePayloadType) {
@@ -99,7 +99,13 @@ type BaseTaskResponseType<T = {}> = {
   data: T;
 };
 
-type TaskType = {
+type TasksResponseType = {
+  items: Array<TasksType>;
+  error: string;
+  totalCount: number;
+};
+
+export type TasksType = {
   addedDate: string;
   deadline: null;
   description: null;

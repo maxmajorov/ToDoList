@@ -1,13 +1,25 @@
+import { TodolistType } from "./../../api/api";
 import { FilterValuesType } from "../reducers/todoList-reducer";
 
 // ===== ACTIONS =====
+export const SET_TODOLISTS = "SET-TODOLISTS";
 export const ADD_NEW_TODOLIST = "ADD-NEW-TODOLIST";
 export const CHANGE_FILTER = "CHANGE-FILTER";
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const CHANGE_TITLE = "CHANGE_TITLE";
 export const DROP_LIST = "DROP-LIST";
 
-type AddNewTodoListACType = {
+export type SetTodosACType = {
+  type: string;
+  todoLists: Array<TodolistType>;
+};
+
+export const setTodosAC = (todoLists: Array<TodolistType>) => ({
+  type: SET_TODOLISTS,
+  todoLists: todoLists,
+});
+
+export type AddNewTodoListACType = {
   type: typeof ADD_NEW_TODOLIST;
   newItem: string;
   newTodoListID: string;
@@ -68,14 +80,9 @@ type DropListACType = {
   todoListID: string;
 };
 
-export const dropListAC = (todoListID: string): DropListACType => ({
-  type: DROP_LIST,
-  todoListID: todoListID,
-});
-
 export type ActionsType =
+  | SetTodosACType
   | AddNewTodoListACType
   | ChangeFilterACType
   | RemoveTodoListACType
-  | ChangeTodoListTitleACType
-  | DropListACType;
+  | ChangeTodoListTitleACType;

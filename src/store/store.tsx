@@ -1,22 +1,27 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
+import thunkMiddleware from "redux-thunk";
 import { tasksReducer, todoListReducer } from "./reducers";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 // ======Создаем Store======
-// У Store уже есть методы getState, dispatch
 
 const rootReducers = combineReducers({
   todoList: todoListReducer,
   task: tasksReducer,
 });
 
-export const store = configureStore({
-  reducer: rootReducers,
-});
+type RootReducersType = typeof rootReducers;
 
-// // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootStateType = ReturnType<typeof store.getState>;
-// // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-// export type AppDispatch = typeof store.dispatch;
+// export const store = configureStore({
+//   reducer: rootReducers,
+// });
+
+export const store: Store<RootStateType> = createStore(
+  rootReducers,
+  composeWithDevTools(applyMiddleware(thunkMiddleware))
+);
+
+export type RootStateType = ReturnType<RootReducersType>;
 
 //@ts-ignore
 window.store = store;

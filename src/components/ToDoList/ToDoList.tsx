@@ -1,19 +1,21 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import classes from "./ToDoList.module.css";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { IconButton } from "@material-ui/core";
 import { AddItemForm } from "../AddItemForm/AddItemForm";
 import { ListItems } from "../ListItems/ListItems";
 import Buttons from "../Buttons/Buttons";
-import { TasksType } from "../../reducers/tasks-reducer";
-import { FilterValuesType } from "../../reducers/todoList-reducer";
 import { EditableSpan } from "../EditableSpan/EditableSpan";
+import { TaskStateType } from "../../store/reducers/tasks-reducer";
+import { FilterValuesType } from "../../store/reducers/todoList-reducer";
+import { getTasksThunkCreator } from "../../store/thunks";
+import { useDispatch } from "react-redux";
 
 type TodoListPropsType = {
   id: string;
   title: string;
   filter: FilterValuesType;
-  tasks: Array<TasksType>;
+  tasks: Array<TaskStateType>;
   // ====== ToDoLists =====
   addNewTodoList: (newItem: string) => void;
   removeTodoList: (todoListID: string) => void;
@@ -35,7 +37,11 @@ type TodoListPropsType = {
 };
 
 export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
-  console.log("todolist", props);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTasksThunkCreator(props.id));
+  }, [dispatch, props.id]);
 
   const removeTodoListHandler = () => {
     props.removeTodoList(props.id);

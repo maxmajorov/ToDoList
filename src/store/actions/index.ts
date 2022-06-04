@@ -1,4 +1,5 @@
 export {
+  setTodosAC,
   addNewTodoListAC,
   changeFilterAC,
   removeTodoListAC,
@@ -6,6 +7,7 @@ export {
 } from "./todo-actions";
 
 export {
+  setTasksAC,
   addNewTaskAC,
   addEmptyArrayTaskAC,
   changeTaskStatusAC,
