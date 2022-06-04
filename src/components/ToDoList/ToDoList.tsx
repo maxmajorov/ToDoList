@@ -87,14 +87,11 @@ export const ToDoList: React.FC<TodoListPropsType> = React.memo((props) => {
         changeTaskStatus={props.changeTaskStatus}
         onChangeTextTask={props.changeTextTask}
       />
-      {/* Если таски отсутствуют то выводится сообщение (прописано в ListItems) и пропадают кнопки, но есть БАГ???*/}
-      {/* {props.tasks.length ? ( */}
       <Buttons
         id={props.id}
         filter={props.filter}
         changeFilter={props.changeFilter}
       />
-      {/* ) : null} */}
     </div>
   );
 });

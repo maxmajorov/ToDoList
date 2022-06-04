@@ -9,80 +9,30 @@ export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const CHANGE_TITLE = "CHANGE_TITLE";
 export const DROP_LIST = "DROP-LIST";
 
-export type SetTodosACType = {
-  type: string;
-  todoLists: Array<TodolistType>;
-};
+export const setTodosAC = (todoLists: Array<TodolistType>) =>
+  ({ type: SET_TODOLISTS, todoLists } as const);
 
-export const setTodosAC = (todoLists: Array<TodolistType>) => ({
-  type: SET_TODOLISTS,
-  todoLists: todoLists,
-});
+export const addNewTodoListAC = (newItem: string, newTodoListID: string) =>
+  ({ type: ADD_NEW_TODOLIST, newItem, newTodoListID } as const);
 
-export type AddNewTodoListACType = {
-  type: typeof ADD_NEW_TODOLIST;
-  newItem: string;
-  newTodoListID: string;
-};
+export const changeFilterAC = (todoListID: string, filter: FilterValuesType) =>
+  ({ type: CHANGE_FILTER, filter, todoListID } as const);
 
-export const addNewTodoListAC = (
-  newItem: string,
-  newTodoListID: string
-): AddNewTodoListACType => ({
-  type: ADD_NEW_TODOLIST,
-  newItem: newItem,
-  newTodoListID: newTodoListID,
-});
-
-type ChangeFilterACType = {
-  type: typeof CHANGE_FILTER;
-  filter: FilterValuesType;
-  todoListID: string;
-};
-
-export const changeFilterAC = (
-  todoListID: string,
-  filter: FilterValuesType
-): ChangeFilterACType => ({
-  type: CHANGE_FILTER,
-  filter: filter,
-  todoListID: todoListID,
-});
-
-type RemoveTodoListACType = {
-  type: typeof REMOVE_TODOLIST;
-  todoListID: string;
-};
-
-export const removeTodoListAC = (todoListID: string): RemoveTodoListACType => ({
-  type: REMOVE_TODOLIST,
-  todoListID: todoListID,
-});
-
-type ChangeTodoListTitleACType = {
-  type: typeof CHANGE_TITLE;
-  changedTitle: string;
-  todoListID: string;
-};
+export const removeTodoListAC = (todoListID: string) =>
+  ({ type: REMOVE_TODOLIST, todoListID } as const);
 
 export const changeTodoListTitleAC = (
   changedTitle: string,
   todoListID: string
-): ChangeTodoListTitleACType => ({
-  type: CHANGE_TITLE,
-  changedTitle: changedTitle,
-  todoListID: todoListID,
-});
+) => ({ type: CHANGE_TITLE, changedTitle, todoListID } as const);
 
-type DropListACType = {
-  type: typeof DROP_LIST;
+// === TYPES ===
 
-  todoListID: string;
-};
+export type SetTodosACType = ReturnType<typeof setTodosAC>;
 
 export type ActionsType =
   | SetTodosACType
-  | AddNewTodoListACType
-  | ChangeFilterACType
-  | RemoveTodoListACType
-  | ChangeTodoListTitleACType;
+  | ReturnType<typeof addNewTodoListAC>
+  | ReturnType<typeof changeFilterAC>
+  | ReturnType<typeof removeTodoListAC>
+  | ReturnType<typeof changeTodoListTitleAC>;

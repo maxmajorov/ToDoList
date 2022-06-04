@@ -100,12 +100,12 @@ type BaseTaskResponseType<T = {}> = {
 };
 
 type TasksResponseType = {
-  items: Array<TasksType>;
+  items: Array<TaskType>;
   error: string;
   totalCount: number;
 };
 
-export type TasksType = {
+export type TaskType = {
   addedDate: string;
   deadline: null;
   description: null;

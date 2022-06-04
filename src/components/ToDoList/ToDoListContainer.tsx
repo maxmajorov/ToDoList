@@ -34,7 +34,7 @@ export const ToDoListContainer = () => {
   // Download todolists from server
 
   useEffect(() => {
-    dispatch(getTodoListsThunkCreator()); // ????
+    dispatch(getTodoListsThunkCreator());
   }, [dispatch]);
 
   // ====== FUNCTION FOR CHANGING TODOLIST ======

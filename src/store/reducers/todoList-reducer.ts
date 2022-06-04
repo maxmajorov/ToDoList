@@ -1,4 +1,4 @@
-import { v1 } from "uuid";
+import { TodolistType } from "../../api/api";
 import {
   ActionsType,
   ADD_NEW_TODOLIST,
@@ -8,70 +8,44 @@ import {
   SET_TODOLISTS,
 } from "../actions/todo-actions";
 
-export type FilterValuesType = "all" | "active" | "completed";
-
-type TodosType = {
-  id: string;
-  addedDate: string;
-  order: number;
-  title: string;
-  filter: FilterValuesType;
-};
-
-export type initialStateType = {
-  todos: Array<TodosType>;
-};
-
-const initialState = {
-  todos: [],
-};
+const initialState: Array<TodoListDomainType> = [];
 
 export const todoListReducer = (
-  state: initialStateType = initialState,
+  state: Array<TodoListDomainType> = initialState,
   action: ActionsType
-): initialStateType => {
+): Array<TodoListDomainType> => {
   switch (action.type) {
     case SET_TODOLISTS: {
-      return {
-        ...state,
-        todos: action.todoLists.map((tl) => ({ ...tl, filter: "all" })),
-      };
+      return action.todoLists.map((tl) => ({ ...tl, filter: "all" }));
     }
 
-    // case ADD_NEW_TODOLIST:
-    //   const newTodoList: TodosFromServerType = {
-    //     id: action.newTodoListID,
-    //     title: action.newItem,
-    //     filter: "all",
-    //   }; // Создаем новый todolist
-    //   state = [...state, newTodoList];
-    //   return state;
+    case REMOVE_TODOLIST: {
+      return state.filter((tl) => tl.id !== action.todoListID);
+    }
 
-    // case REMOVE_TODOLIST: {
-    //   const withoutRemoveTodo = state.filter(
-    //     (el) => el.id !== action.todoListID
-    //   ); //фильтруем листы по ID
-    //   state = [...withoutRemoveTodo];
-    //   return state;
-    // }
-    // case CHANGE_FILTER: {
-    //   return state.map((list) =>
-    //     list.id === action.todoListID
-    //       ? { ...list, filter: action.filter }
-    //       : list
-    //   );
-    // }
+    case CHANGE_FILTER: {
+      return state.map((tl) =>
+        tl.id === action.todoListID ? { ...tl, filter: action.filter } : tl
+      );
+    }
 
-    // case CHANGE_TITLE: {
-    //   return state.map((list) =>
-    //     list.id === action.todoListID
-    //       ? { ...list, title: action.changedTitle }
-    //       : list
-    //   );
-    // }
+    case CHANGE_TITLE: {
+      return state.map((tl) =>
+        tl.id === action.todoListID ? { ...tl, title: action.changedTitle } : tl
+      );
+    }
+
+    case ADD_NEW_TODOLIST:
+      return state; // Дописать
 
     default: {
       return state;
     }
   }
+};
+
+// TYPES
+export type FilterValuesType = "all" | "active" | "completed";
+type TodoListDomainType = TodolistType & {
+  filter: FilterValuesType;
 };
