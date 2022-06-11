@@ -1,2 +1,2 @@
 export { tasksReducer } from "./tasks-reducer";
-export { todoListReducer } from "./todoList-reducer";
+export { todolistsReducer } from "./todoList-reducer";

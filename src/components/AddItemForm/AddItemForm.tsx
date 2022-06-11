@@ -1,8 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
+import { AddBox } from "@mui/icons-material";
+import { IconButton, TextField } from "@mui/material";
 import classes from "./AddItemForm.module.css";
-import { IconButton } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import TextField from "@material-ui/core/TextField";
 
 type AddItemFormPropsType = {
   addItem: (newItem: string) => void;
@@ -48,7 +47,7 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(
             // helperText={error} разобраться как сделать чтоб крассным цветом выводилось
           />
           <IconButton onClick={onClickAddTaskHandler}>
-            <AddIcon style={{ fontSize: 30 }} color={"secondary"} />
+            <AddBox />
           </IconButton>
           <div className={classes.error}>{error}</div>
         </div>

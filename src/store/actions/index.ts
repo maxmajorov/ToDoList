@@ -1,16 +1,14 @@
 export {
-  setTodosAC,
-  addNewTodoListAC,
-  changeFilterAC,
-  removeTodoListAC,
-  changeTodoListTitleAC,
+  setTodolistsAC,
+  addTodolistAC,
+  changeTodolistFilterAC,
+  removeTodolistAC,
+  changeTodolistTitleAC,
 } from "./todo-actions";
 
 export {
-  setTasksAC,
-  addNewTaskAC,
-  addEmptyArrayTaskAC,
-  changeTaskStatusAC,
   removeTaskAC,
-  changeTaskTitleAC,
+  addTaskAC,
+  updateTaskAC,
+  setTasksAC,
 } from "./tasks-actions";

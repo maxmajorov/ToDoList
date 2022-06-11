@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const instance = axios.create({
   baseURL: "https://social-network.samuraijs.com/api/1.1/",
@@ -8,123 +8,98 @@ export const instance = axios.create({
 
 // ==== TODO ====
 
-export const todoAPI = {
+export const todolistsAPI = {
   getTodolists() {
-    return instance.get<Array<TodolistType>>("/todo-lists");
+    return instance.get<TodolistType[]>("todo-lists");
   },
-
-  createTodolist() {
+  createTodolist(title: string) {
     return instance.post<
-      CommonResponseType<{
-        item: TodolistType;
-      }>
-    >("/todo-lists", {
-      title: "newToDo",
-    });
+      { title: string },
+      AxiosResponse<ResponseType<{ item: TodolistType }>>
+    >("todo-lists", { title });
   },
-
-  deleteTodolist(todolistId: string) {
-    return instance.delete<CommonResponseType>(`/todo-lists/${todolistId}`);
+  deleteTodolist(id: string) {
+    return instance.delete<ResponseType>(`todo-lists/${id}`);
   },
-
-  updateTodolistTitle(payload: updatePayloadType) {
-    return instance.put<CommonResponseType>(
-      `/todo-lists/${payload.todolistId}`,
-      {
-        title: payload.title,
-      }
+  updateTodolist(id: string, title: string) {
+    return instance.put<{ title: string }, AxiosResponse<ResponseType>>(
+      `todo-lists/${id}`,
+      { title }
     );
   },
+  getTasks(todolistId: string) {
+    return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
+  },
+  deleteTask(todolistId: string, taskId: string) {
+    return instance.delete<ResponseType>(
+      `todo-lists/${todolistId}/tasks/${taskId}`
+    );
+  },
+  createTask(todolistId: string, title: string) {
+    return instance.post<
+      { title: string },
+      AxiosResponse<ResponseType<{ item: TaskType }>>
+    >(`todo-lists/${todolistId}/tasks`, { title });
+  },
+  updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+    return instance.put<
+      UpdateTaskModelType,
+      AxiosResponse<ResponseType<{ item: TaskType }>>
+    >(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+  },
 };
 
-// ==== TYPES ====
-
-type CommonResponseType<T = {}> = {
-  resultCode: number;
-  messages: Array<string>;
-  fieldsErrors: Array<string>;
-  data: T;
-};
-
+// types
 export type TodolistType = {
   id: string;
+  title: string;
   addedDate: string;
   order: number;
-  title: string;
 };
-
-type updatePayloadType = {
-  todolistId: string;
-  title: string;
-};
-
-// ==== TASKS ====
-
-export const taskAPI = {
-  getTasks(todolistId: string) {
-    return instance.get<TasksResponseType>(`/todo-lists/${todolistId}/tasks`);
-  },
-
-  createTask(payload: updatePayloadType) {
-    return instance.post<BaseTaskResponseType>(
-      `/todo-lists/${payload.todolistId}/tasks`,
-      {
-        title: payload.title,
-      }
-    );
-  },
-
-  deleteTask(payload: deleteTaskPayloadType) {
-    return instance.delete<BaseTaskResponseType>(
-      `/todo-lists/${payload.todolistId}/tasks/${payload.taskId}`
-    );
-  },
-
-  updateTaskTitle(payload: updateTaskTitlePayloadType) {
-    return instance.put<BaseTaskResponseType>(
-      `/todo-lists/${payload.todolistId}/tasks/${payload.taskId}`,
-      {
-        title: payload.title,
-      }
-    );
-  },
-};
-
-// ==== TYPES ====
-
-type BaseTaskResponseType<T = {}> = {
-  fieldsErrors: Array<string>;
-  messages: Array<string>;
+export type ResponseType<D = {}> = {
   resultCode: number;
-  data: T;
+  messages: Array<string>;
+  fieldsErrors: Array<string>;
+  data: D;
 };
 
-type TasksResponseType = {
-  items: Array<TaskType>;
-  error: string;
-  totalCount: number;
-};
+export enum TaskStatuses {
+  New = 0,
+  InProgress = 1,
+  Completed = 2,
+  Draft = 3,
+}
+
+export enum TaskPriorities {
+  Low = 0,
+  Middle = 1,
+  Hi = 2,
+  Urgently = 3,
+  Later = 4,
+}
 
 export type TaskType = {
-  addedDate: string;
-  deadline: null;
-  description: null;
+  description: string;
+  title: string;
+  status: TaskStatuses;
+  priority: TaskPriorities;
+  startDate: string;
+  deadline: string;
   id: string;
-  order: number;
-  priority: 1;
-  startDate: number;
-  status: 0;
-  title: string;
   todoListId: string;
+  order: number;
+  addedDate: string;
 };
-
-type deleteTaskPayloadType = {
-  todolistId: string;
-  taskId: string;
-};
-
-type updateTaskTitlePayloadType = {
-  todolistId: string;
-  taskId: string;
+export type UpdateTaskModelType = {
   title: string;
+  description: string;
+  status: TaskStatuses;
+  priority: TaskPriorities;
+  startDate: string;
+  deadline: string;
+};
+type GetTasksResponse = {
+  error: string | null;
+  totalCount: number;
+  items: TaskType[];
 };

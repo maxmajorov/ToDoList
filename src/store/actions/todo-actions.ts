@@ -7,32 +7,34 @@ export const ADD_NEW_TODOLIST = "ADD-NEW-TODOLIST";
 export const CHANGE_FILTER = "CHANGE-FILTER";
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const CHANGE_TITLE = "CHANGE_TITLE";
-export const DROP_LIST = "DROP-LIST";
 
-export const setTodosAC = (todoLists: Array<TodolistType>) =>
-  ({ type: SET_TODOLISTS, todoLists } as const);
-
-export const addNewTodoListAC = (newItem: string, newTodoListID: string) =>
-  ({ type: ADD_NEW_TODOLIST, newItem, newTodoListID } as const);
-
-export const changeFilterAC = (todoListID: string, filter: FilterValuesType) =>
-  ({ type: CHANGE_FILTER, filter, todoListID } as const);
-
-export const removeTodoListAC = (todoListID: string) =>
-  ({ type: REMOVE_TODOLIST, todoListID } as const);
-
-export const changeTodoListTitleAC = (
-  changedTitle: string,
-  todoListID: string
-) => ({ type: CHANGE_TITLE, changedTitle, todoListID } as const);
+export const removeTodolistAC = (id: string) =>
+  ({ type: REMOVE_TODOLIST, id } as const);
+export const addTodolistAC = (todolist: TodolistType) =>
+  ({ type: ADD_NEW_TODOLIST, todolist } as const);
+export const changeTodolistTitleAC = (id: string, title: string) =>
+  ({
+    type: CHANGE_TITLE,
+    id,
+    title,
+  } as const);
+export const changeTodolistFilterAC = (id: string, filter: FilterValuesType) =>
+  ({
+    type: CHANGE_FILTER,
+    id,
+    filter,
+  } as const);
+export const setTodolistsAC = (todolists: Array<TodolistType>) =>
+  ({ type: SET_TODOLISTS, todolists } as const);
 
 // === TYPES ===
 
-export type SetTodosACType = ReturnType<typeof setTodosAC>;
-
+export type AddTodolistActionType = ReturnType<typeof addTodolistAC>;
+export type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>;
+export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>;
 export type ActionsType =
-  | SetTodosACType
-  | ReturnType<typeof addNewTodoListAC>
-  | ReturnType<typeof changeFilterAC>
-  | ReturnType<typeof removeTodoListAC>
-  | ReturnType<typeof changeTodoListTitleAC>;
+  | RemoveTodolistActionType
+  | AddTodolistActionType
+  | ReturnType<typeof changeTodolistTitleAC>
+  | ReturnType<typeof changeTodolistFilterAC>
+  | SetTodolistsActionType;

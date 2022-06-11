@@ -1,13 +1,7 @@
 import React from "react";
+import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import classes from "./AppBar.module.css";
-import {
-  Button,
-  Typography,
-  IconButton,
-  Toolbar,
-  AppBar,
-} from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import { MiscellaneousServicesOutlined } from "@mui/icons-material";
 
 export const TodoAppBar = () => {
   return (
@@ -20,7 +14,7 @@ export const TodoAppBar = () => {
             color="inherit"
             aria-label="menu"
           >
-            <MenuIcon />
+            <MiscellaneousServicesOutlined />
           </IconButton>
           <Typography variant="h6" className={classes.time}>
             {new Date().toLocaleString()}

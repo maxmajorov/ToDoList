@@ -1,74 +1,76 @@
-import { SET_TODOLISTS } from "./../actions/todo-actions";
-import { TaskType } from "../../api/api";
+import { TaskPriorities, TaskStatuses, TaskType } from "../../api/api";
 import {
-  TaskActionsType,
   ADD_NEW_TASK,
-  ADD_EMPTY_ARRAY_TASK,
-  CHANGE_TASK_STATUS,
-  CHANGE_TASK_TITLE,
   REMOVE_TASK,
   SET_TASKS,
+  ActionsType,
+  UPDATE_TASK,
 } from "../actions/tasks-actions";
+import {
+  ADD_NEW_TODOLIST,
+  REMOVE_TODOLIST,
+  SET_TODOLISTS,
+} from "../actions/todo-actions";
 
-export type TaskStateType = {
-  [key: string]: Array<TaskType>;
-};
-
-let initialState: TaskStateType = {};
+const initialState: TasksStateType = {};
 
 export const tasksReducer = (
-  state: TaskStateType = initialState,
-  action: TaskActionsType
-): TaskStateType => {
+  state: TasksStateType = initialState,
+  action: ActionsType
+): TasksStateType => {
   switch (action.type) {
+    case REMOVE_TASK:
+      return {
+        ...state,
+        [action.todolistId]: state[action.todolistId].filter(
+          (t) => t.id !== action.taskId
+        ),
+      };
+    case ADD_NEW_TASK:
+      return {
+        ...state,
+        [action.task.todoListId]: [
+          action.task,
+          ...state[action.task.todoListId],
+        ],
+      };
+    case UPDATE_TASK:
+      return {
+        ...state,
+        [action.todolistId]: state[action.todolistId].map((t) =>
+          t.id === action.taskId ? { ...t, ...action.model } : t
+        ),
+      };
+    case ADD_NEW_TODOLIST:
+      return { ...state, [action.todolist.id]: [] };
+    case REMOVE_TODOLIST:
+      const copyState = { ...state };
+      delete copyState[action.id];
+      return copyState;
     case SET_TODOLISTS: {
-      const stateCopy = { ...state };
-      action.todoLists.forEach((tl) => (stateCopy[tl.id] = []));
-      return stateCopy;
+      const copyState = { ...state };
+      action.todolists.forEach((tl) => {
+        copyState[tl.id] = [];
+      });
+      return copyState;
     }
-
-    case REMOVE_TASK: {
-      return {
-        ...state,
-        [action.todoListID]: state[action.todoListID].filter(
-          (el) => el.id !== action.taskID
-        ),
-      };
-    }
-
-    //ИСПРАВИТЬ
-    // case ADD_NEW_TASK: {
-    //   return {
-    //     ...state,
-    //     [action.todoListID]: [action.newTaskName, state[action.todoListID]],
-    //   };
-    // }
-
-    case SET_TASKS: {
-      return { ...state, [action.todoListID]: action.tasks };
-    }
-
-    case CHANGE_TASK_TITLE: {
-      return {
-        ...state,
-        [action.todoListID]: state[action.todoListID].map((task) =>
-          task.id === action.taskID
-            ? { ...task, text: action.changedTaskName }
-            : task
-        ),
-      };
-    }
-
-    // case CHANGE_TASK_STATUS: {
-    //   const todoList = state[action.todoListID]; //находим по ID нужный todoList
-    //   const changedStatustask = todoList.map(
-    //     (el) => (el.id === action.taskID ? { ...el, isDone: !el.isDone } : el) // перезаписываем с учетом нового статуса таски
-    //   );
-    //   state = { ...state, [action.todoListID]: changedStatustask };
-    //   return state;
-    // }
-
+    case SET_TASKS:
+      return { ...state, [action.todolistId]: action.tasks };
     default:
       return state;
   }
+};
+
+// ==== TYPES ====
+
+export type UpdateDomainTaskModelType = {
+  title?: string;
+  description?: string;
+  status?: TaskStatuses;
+  priority?: TaskPriorities;
+  startDate?: string;
+  deadline?: string;
+};
+export type TasksStateType = {
+  [key: string]: Array<TaskType>;
 };

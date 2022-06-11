@@ -2,12 +2,12 @@ import React, { ChangeEvent, FocusEvent, MouseEvent, useState } from "react";
 // import classes from "./EditableSpan.module.css";
 
 type EditableSpanPropsType = {
-  text: string;
+  value: string;
   onChange: (changedTask: string) => void;
 };
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = ({
-  text,
+  value,
   onChange,
 }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -17,7 +17,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = ({
 
   const activateEditMode = (event: MouseEvent<HTMLSpanElement>) => {
     setEditMode(true);
-    setTitle(text);
+    setTitle(value);
   };
 
   const disactivateEditMode = (event: FocusEvent<HTMLInputElement>) => {
@@ -38,7 +38,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = ({
     ></input>
   ) : (
     <span onDoubleClick={activateEditMode} className={spanStyle}>
-      {text}
+      {value}
     </span>
   );
 };

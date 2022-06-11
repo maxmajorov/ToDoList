@@ -1,51 +1,41 @@
 import { TodolistType } from "../../api/api";
 import {
-  ActionsType,
-  ADD_NEW_TODOLIST,
-  CHANGE_FILTER,
-  CHANGE_TITLE,
-  REMOVE_TODOLIST,
   SET_TODOLISTS,
+  ActionsType,
+  REMOVE_TODOLIST,
+  ADD_NEW_TODOLIST,
+  CHANGE_TITLE,
+  CHANGE_FILTER,
 } from "../actions/todo-actions";
 
-const initialState: Array<TodoListDomainType> = [];
+const initialState: Array<TodolistDomainType> = [];
 
-export const todoListReducer = (
-  state: Array<TodoListDomainType> = initialState,
+export const todolistsReducer = (
+  state: Array<TodolistDomainType> = initialState,
   action: ActionsType
-): Array<TodoListDomainType> => {
+): Array<TodolistDomainType> => {
   switch (action.type) {
-    case SET_TODOLISTS: {
-      return action.todoLists.map((tl) => ({ ...tl, filter: "all" }));
-    }
-
-    case REMOVE_TODOLIST: {
-      return state.filter((tl) => tl.id !== action.todoListID);
-    }
-
-    case CHANGE_FILTER: {
-      return state.map((tl) =>
-        tl.id === action.todoListID ? { ...tl, filter: action.filter } : tl
-      );
-    }
-
-    case CHANGE_TITLE: {
-      return state.map((tl) =>
-        tl.id === action.todoListID ? { ...tl, title: action.changedTitle } : tl
-      );
-    }
-
+    case REMOVE_TODOLIST:
+      return state.filter((tl) => tl.id !== action.id);
     case ADD_NEW_TODOLIST:
-      return state; // Дописать
-
-    default: {
+      return [{ ...action.todolist, filter: "all" }, ...state];
+    case CHANGE_TITLE:
+      return state.map((tl) =>
+        tl.id === action.id ? { ...tl, title: action.title } : tl
+      );
+    case CHANGE_FILTER:
+      return state.map((tl) =>
+        tl.id === action.id ? { ...tl, filter: action.filter } : tl
+      );
+    case SET_TODOLISTS:
+      return action.todolists.map((tl) => ({ ...tl, filter: "all" }));
+    default:
       return state;
-    }
   }
 };
 
 // TYPES
 export type FilterValuesType = "all" | "active" | "completed";
-type TodoListDomainType = TodolistType & {
+export type TodolistDomainType = TodolistType & {
   filter: FilterValuesType;
 };

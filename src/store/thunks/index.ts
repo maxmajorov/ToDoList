@@ -1,2 +1,13 @@
-export { getTasksThunkCreator } from "./tasks-thunk";
-export { getTodoListsThunkCreator } from "./todoList-thunk";
+export {
+  fetchTodolistsTC,
+  removeTodolistTC,
+  addTodolistTC,
+  changeTodolistTitleTC,
+} from "./todoList-thunk";
+
+export {
+  fetchTasksTC,
+  removeTaskTC,
+  addTaskTC,
+  updateTaskTC,
+} from "./tasks-thunk";
