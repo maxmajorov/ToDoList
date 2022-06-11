@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { TaskStatuses } from "../../api/api";
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { RootStateType } from "../../store/store";
+import { useAppSelector } from "../../store/store";
 import {
   fetchTodolistsTC,
   removeTaskTC,
@@ -17,10 +17,12 @@ import {
 import { FilterValuesType } from "../../store/reducers/todoList-reducer";
 import { changeTodolistFilterAC } from "../../store/actions";
 import { Todolist } from "./ToDoList";
+import { LinearProgress } from "@mui/material";
 
 export const ToDoListContainer: React.FC = () => {
-  const todolists = useSelector((state: RootStateType) => state.todoList);
-  const tasks = useSelector((state: RootStateType) => state.task);
+  const todolists = useAppSelector((state) => state.todoList);
+  const tasks = useAppSelector((state) => state.task);
+  const status = useAppSelector((state) => state.app.status);
   const dispatch = useDispatch();
 
   // Download todolists from server
@@ -87,6 +89,9 @@ export const ToDoListContainer: React.FC = () => {
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
+
+      {status === "loading" && <LinearProgress />}
+
       <Grid container spacing={3}>
         {todolists.map((tl) => {
           let allTodolistTasks = tasks[tl.id];

@@ -1,5 +1,6 @@
 import { TodolistType } from "./../../api/api";
 import { FilterValuesType } from "../reducers/todoList-reducer";
+import { AppSetStatus } from "./app-actions";
 
 // ===== ACTIONS =====
 export const SET_TODOLISTS = "SET-TODOLISTS";
@@ -37,4 +38,5 @@ export type ActionsType =
   | AddTodolistActionType
   | ReturnType<typeof changeTodolistTitleAC>
   | ReturnType<typeof changeTodolistFilterAC>
-  | SetTodolistsActionType;
+  | SetTodolistsActionType
+  | AppSetStatus;
