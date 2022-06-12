@@ -1,4 +1,8 @@
-import { ActionsType, APP_SET_STATUS } from "../actions/app-actions";
+import {
+  ActionsType,
+  APP_SET_ERROR,
+  APP_SET_STATUS,
+} from "../actions/app-actions";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
@@ -7,6 +11,7 @@ export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 
 const initialState = {
   status: "idle" as RequestStatusType,
+  error: null as null | string,
 };
 
 type InitialStateType = typeof initialState;
@@ -20,6 +25,12 @@ export const appReducer = (
       return {
         ...state,
         status: action.status,
+      };
+
+    case APP_SET_ERROR:
+      return {
+        ...state,
+        error: action.error,
       };
 
     default:

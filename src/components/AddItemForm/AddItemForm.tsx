@@ -2,13 +2,15 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { AddBox } from "@mui/icons-material";
 import { IconButton, TextField } from "@mui/material";
 import classes from "./AddItemForm.module.css";
+import { RequestStatusType } from "../../store/reducers/app-reducer";
 
 type AddItemFormPropsType = {
   addItem: (newItem: string) => void;
+  entityStatus?: RequestStatusType;
 };
 
 export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(
-  ({ addItem }) => {
+  ({ addItem, entityStatus }) => {
     console.log("additem form render");
     const [newTitle, setNewTitle] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
@@ -38,16 +40,21 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(
             value={newTitle}
             label="New item"
             placeholder="enter the text"
-            multiline
             variant="outlined"
             type="text"
             onChange={onChangeInputHandler}
             onKeyPress={onKeyPressHandler}
             color={"primary"}
+            disabled={entityStatus === "loading"}
             // helperText={error} разобраться как сделать чтоб крассным цветом выводилось
           />
-          <IconButton onClick={onClickAddTaskHandler}>
-            <AddBox />
+          <IconButton
+            onClick={onClickAddTaskHandler}
+            disabled={entityStatus === "loading"}
+          >
+            <AddBox
+              color={entityStatus === "loading" ? "disabled" : "primary"}
+            />
           </IconButton>
           <div className={classes.error}>{error}</div>
         </div>

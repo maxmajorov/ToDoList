@@ -10,11 +10,13 @@ import { fetchTasksTC } from "../../store/thunks";
 import classes from "./ToDoList.module.css";
 import Buttons from "../Buttons/Buttons";
 import { Task } from "../Task/Task";
+import { RequestStatusType } from "../../store/reducers/app-reducer";
 
 type PropsType = {
   id: string;
   title: string;
   tasks: Array<TaskType>;
+  entityStatus: RequestStatusType;
   changeFilter: (value: FilterValuesType, todolistId: string) => void;
   addTask: (title: string, todolistId: string) => void;
   changeTaskStatus: (
@@ -86,11 +88,14 @@ export const Todolist = React.memo(function (props: PropsType) {
     <div className={classes.wrapper}>
       <h3>
         <EditableSpan value={props.title} onChange={changeTodolistTitle} />
-        <IconButton onClick={removeTodolist}>
+        <IconButton
+          onClick={removeTodolist}
+          disabled={props.entityStatus === "loading"}
+        >
           <DeleteForever />
         </IconButton>
       </h3>
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={addTask} entityStatus={props.entityStatus} />
       <div>
         {tasksForTodolist.map((t) => (
           <Task

@@ -86,11 +86,10 @@ export const ToDoListContainer: React.FC = () => {
 
   return (
     <>
+      {status === "loading" && <LinearProgress />}
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
-
-      {status === "loading" && <LinearProgress />}
 
       <Grid container spacing={3}>
         {todolists.map((tl) => {
@@ -103,6 +102,7 @@ export const ToDoListContainer: React.FC = () => {
                   id={tl.id}
                   title={tl.title}
                   tasks={allTodolistTasks}
+                  entityStatus={tl.entityStatus}
                   removeTask={removeTask}
                   changeFilter={changeFilter}
                   addTask={addTask}

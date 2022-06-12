@@ -1,6 +1,6 @@
 import { TaskType } from "../../api/api";
 import { UpdateDomainTaskModelType } from "../reducers/tasks-reducer";
-import { AppSetStatus } from "./app-actions";
+import { AppSetErrorType, AppSetStatusType } from "./app-actions";
 import {
   SetTodolistsActionType,
   AddTodolistActionType,
@@ -32,4 +32,5 @@ export type ActionsType =
   | RemoveTodolistActionType
   | SetTodolistsActionType
   | ReturnType<typeof setTasksAC>
-  | AppSetStatus;
+  | AppSetStatusType
+  | AppSetErrorType;
