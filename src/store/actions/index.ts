@@ -14,4 +14,5 @@ export {
   addTaskAC,
   updateTaskAC,
   setTasksAC,
+  setTaskEntityStatusAC,
 } from "./tasks-actions";

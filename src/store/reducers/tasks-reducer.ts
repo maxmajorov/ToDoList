@@ -5,12 +5,14 @@ import {
   SET_TASKS,
   ActionsType,
   UPDATE_TASK,
+  SET_TASK_ENTITY_STATUS,
 } from "../actions/tasks-actions";
 import {
   ADD_NEW_TODOLIST,
   REMOVE_TODOLIST,
   SET_TODOLISTS,
 } from "../actions/todo-actions";
+import { RequestStatusType } from "./app-reducer";
 
 const initialState: TasksStateType = {};
 
@@ -54,6 +56,18 @@ export const tasksReducer = (
       });
       return copyState;
     }
+
+    case SET_TASK_ENTITY_STATUS: {
+      return {
+        ...state,
+        [action.todolistId]: state[action.todolistId].map((task) =>
+          task.id === action.taskId
+            ? { ...task, entityTaskStatus: action.entityTaskStatus }
+            : task
+        ),
+      };
+    }
+
     case SET_TASKS:
       return { ...state, [action.todolistId]: action.tasks };
     default:

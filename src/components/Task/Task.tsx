@@ -4,10 +4,12 @@ import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import { TaskStatuses, TaskType } from "../../api/api";
+import { RequestStatusType } from "../../store/reducers/app-reducer";
 
 type TaskPropsType = {
   task: TaskType;
   todolistId: string;
+  entityTaskStatus: RequestStatusType;
   changeTaskStatus: (
     id: string,
     status: TaskStatuses,
@@ -56,7 +58,11 @@ export const Task = React.memo((props: TaskPropsType) => {
         onChange={onChangeHandler}
       />
 
-      <EditableSpan value={props.task.title} onChange={onTitleChangeHandler} />
+      <EditableSpan
+        value={props.task.title}
+        onChange={onTitleChangeHandler}
+        entityTaskStatus={props.entityTaskStatus}
+      />
       <IconButton onClick={onClickHandler}>
         <Delete />
       </IconButton>

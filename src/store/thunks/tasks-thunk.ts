@@ -10,7 +10,7 @@ import {
   updateTaskAC,
 } from "../actions";
 import { UpdateDomainTaskModelType } from "../reducers/tasks-reducer";
-import { ActionsType } from "../actions/tasks-actions";
+import { ActionsType, setTaskEntityStatusAC } from "../actions/tasks-actions";
 import { AxiosError } from "axios";
 
 export const fetchTasksTC =
@@ -87,7 +87,9 @@ export const updateTaskTC =
       status: task.status,
       ...domainModel,
     };
+
     dispatch(appSetStatusAC("loading"));
+    dispatch(setTaskEntityStatusAC(taskId, todolistId, "loading"));
     todolistsAPI
       .updateTask(todolistId, taskId, apiModel)
       .then((res) => {
