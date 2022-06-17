@@ -1,9 +1,18 @@
 import React from "react";
-import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  LinearProgress,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import classes from "./AppBar.module.css";
 import { MiscellaneousServicesOutlined } from "@mui/icons-material";
+import { useAppSelector } from "../../store/store";
 
 export const TodoAppBar = () => {
+  const status = useAppSelector((state) => state.app.status);
   return (
     <div className={classes.grow}>
       <AppBar position="static">
@@ -21,6 +30,7 @@ export const TodoAppBar = () => {
           </Typography>
           <Button color="inherit">Login</Button>
         </Toolbar>
+        {status === "loading" && <LinearProgress />}
       </AppBar>
     </div>
   );

@@ -17,12 +17,10 @@ import {
 import { FilterValuesType } from "../../store/reducers/todoList-reducer";
 import { changeTodolistFilterAC } from "../../store/actions";
 import { Todolist } from "./ToDoList";
-import { LinearProgress } from "@mui/material";
 
 export const ToDoListContainer: React.FC = () => {
   const todolists = useAppSelector((state) => state.todoList);
   const tasks = useAppSelector((state) => state.task);
-  const status = useAppSelector((state) => state.app.status);
   const dispatch = useDispatch();
 
   // Download todolists from server
@@ -86,11 +84,9 @@ export const ToDoListContainer: React.FC = () => {
 
   return (
     <>
-      {status === "loading" && <LinearProgress />}
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
-
       <Grid container spacing={3}>
         {todolists.map((tl) => {
           let allTodolistTasks = tasks[tl.id];
