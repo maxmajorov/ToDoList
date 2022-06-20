@@ -2,6 +2,7 @@ import {
   ActionsType,
   APP_SET_ERROR,
   APP_SET_STATUS,
+  INITIALIZE_APP,
 } from "../actions/app-actions";
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
@@ -12,6 +13,7 @@ export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
 const initialState = {
   status: "idle" as RequestStatusType,
   error: null as null | string,
+  isInitializeApp: false,
 };
 
 type InitialStateType = typeof initialState;
@@ -21,6 +23,12 @@ export const appReducer = (
   action: ActionsType
 ): InitialStateType => {
   switch (action.type) {
+    case INITIALIZE_APP:
+      return {
+        ...state,
+        isInitializeApp: !state.isInitializeApp,
+      };
+
     case APP_SET_STATUS:
       return {
         ...state,

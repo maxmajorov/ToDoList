@@ -11,3 +11,5 @@ export {
   addTaskTC,
   updateTaskTC,
 } from "./tasks-thunk";
+
+export { authUserTC, loginTC, logoutTC } from "./auth-thunk";

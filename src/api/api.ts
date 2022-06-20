@@ -7,6 +7,25 @@ export const instance = axios.create({
   withCredentials: true,
 });
 
+// ==== AUTHORIZATION ====
+
+export const authAPI = {
+  authMe() {
+    return instance.get<ResponseType<AuthMeType>>("auth/me");
+  },
+
+  login(data: LoginParamsType) {
+    return instance.post<
+      LoginParamsType,
+      AxiosResponse<ResponseType<{ userId: string }>>
+    >("auth/login", data);
+  },
+
+  logout() {
+    return instance.delete<LoguotResponseType>("auth/login");
+  },
+};
+
 // ==== TODO ====
 
 export const todolistsAPI = {
@@ -50,13 +69,42 @@ export const todolistsAPI = {
   },
 };
 
-// types
+// ==== TYPES ====
+
+export type AuthMeType = {
+  userId: number;
+  email: string;
+  login: string;
+};
+
+export type LoginResponseType = {
+  resultCode: number;
+  messages: string;
+  data: {
+    userId: number;
+  };
+};
+
+export type LoginParamsType = {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+  captcha?: boolean;
+};
+
+export type LoguotResponseType = {
+  resultCode: number;
+  messages: Array<string>;
+  data: {};
+};
+
 export type TodolistType = {
   id: string;
   title: string;
   addedDate: string;
   order: number;
 };
+
 export type ResponseType<D = {}> = {
   resultCode: number;
   messages: Array<string>;

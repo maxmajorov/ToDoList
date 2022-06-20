@@ -8,8 +8,17 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
+import { loginTC } from "../../store/thunks";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../store/store";
+import { selectIsAuth } from "../../store/selectors";
 
 export const LoginForm: React.FC = () => {
+  const isAuth = useAppSelector(selectIsAuth);
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
+
   type FormikErrorType = {
     email?: string;
     password?: string;
@@ -44,12 +53,15 @@ export const LoginForm: React.FC = () => {
     },
 
     onSubmit: (values) => {
-      alert(JSON.stringify(values));
+      const { email, password, rememberMe } = values;
       formik.resetForm();
+      dispatch(loginTC({ email, password, rememberMe }));
     },
   });
 
-  return (
+  return isAuth ? (
+    <> {navigate("/")}</>
+  ) : (
     <Grid container justifyContent={"center"}>
       <Grid item justifyContent={"center"}>
         <form onSubmit={formik.handleSubmit}>
@@ -65,9 +77,6 @@ export const LoginForm: React.FC = () => {
                   here
                 </a>
               </p>
-              <p>or use common test account credentials:</p>
-              <p>Email: free@samuraijs.com</p>
-              <p>Password: free</p>
             </FormLabel>
             <FormGroup>
               <TextField
@@ -87,10 +96,6 @@ export const LoginForm: React.FC = () => {
                 type="password"
                 label="Password"
                 margin="normal"
-                // name="password"
-                // onChange={formik.handleChange}
-                // onBlur={formik.handleBlur}
-                // value={formik.values.password}
                 {...formik.getFieldProps("password")}
               />
               {formik.touched.password && formik.errors.password ? (

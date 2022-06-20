@@ -1,4 +1,6 @@
-export { appSetStatusAC, appSetErrorAC } from "./app-actions";
+export { authMeAC, loginAC, logoutAC } from "./auth-actions";
+
+export { initializeAppAC, appSetStatusAC, appSetErrorAC } from "./app-actions";
 
 export {
   setTodolistsAC,

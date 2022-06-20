@@ -17,8 +17,11 @@ import {
 import { FilterValuesType } from "../../store/reducers/todoList-reducer";
 import { changeTodolistFilterAC } from "../../store/actions";
 import { Todolist } from "./ToDoList";
+import { selectIsAuth } from "../../store/selectors";
+import { Navigate } from "react-router-dom";
 
 export const ToDoListContainer: React.FC = () => {
+  const isAuth = useAppSelector(selectIsAuth);
   const todolists = useAppSelector((state) => state.todoList);
   const tasks = useAppSelector((state) => state.task);
   const dispatch = useDispatch();
@@ -26,6 +29,9 @@ export const ToDoListContainer: React.FC = () => {
   // Download todolists from server
 
   useEffect(() => {
+    if (!isAuth) {
+      return;
+    }
     dispatch(fetchTodolistsTC());
   }, []);
 
@@ -81,6 +87,10 @@ export const ToDoListContainer: React.FC = () => {
     },
     [dispatch]
   );
+
+  if (!isAuth) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>

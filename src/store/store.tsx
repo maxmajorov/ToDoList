@@ -1,6 +1,11 @@
 import { applyMiddleware, combineReducers, createStore, Store } from "redux";
 import thunkMiddleware from "redux-thunk";
-import { appReducer, tasksReducer, todolistsReducer } from "./reducers";
+import {
+  appReducer,
+  authReducer,
+  tasksReducer,
+  todolistsReducer,
+} from "./reducers";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 
@@ -10,6 +15,7 @@ const rootReducers = combineReducers({
   todoList: todolistsReducer,
   task: tasksReducer,
   app: appReducer,
+  auth: authReducer,
 });
 
 type RootReducersType = typeof rootReducers;
