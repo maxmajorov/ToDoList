@@ -1,10 +1,6 @@
 import { LOGOUT } from "./../actions/auth-actions";
 import { ActionsType, AUTH_ME, LOGIN } from "../actions/auth-actions";
 
-// export type InitialStateType = {
-//   isAuth: boolean;
-// };
-
 const initialState = {
   isAuth: false,
 };
