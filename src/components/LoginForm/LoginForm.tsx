@@ -8,15 +8,14 @@ import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
-import { loginTC } from "../../store/thunks";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../store/store";
-import { selectIsAuth } from "../../store/selectors";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { loginTC } from "../../store/reducers/auth-reducer";
+import { isLoggedInSelector } from "../../store/reducers/auth-reducer";
 
 export const LoginForm: React.FC = () => {
-  const isAuth = useAppSelector(selectIsAuth);
-  const dispatch = useDispatch();
+  const isLoggedIn = useAppSelector(isLoggedInSelector);
+  const dispatch = useAppDispatch();
   let navigate = useNavigate();
 
   type FormikErrorType = {
@@ -59,7 +58,7 @@ export const LoginForm: React.FC = () => {
     },
   });
 
-  return isAuth ? (
+  return isLoggedIn ? (
     <> {navigate("/")}</>
   ) : (
     <Grid container justifyContent={"center"}>

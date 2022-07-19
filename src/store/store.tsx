@@ -1,16 +1,21 @@
 import { applyMiddleware, combineReducers, createStore, Store } from "redux";
-import thunkMiddleware from "redux-thunk";
+import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import {
   appReducer,
   authReducer,
   tasksReducer,
   todolistsReducer,
 } from "./reducers";
+import { useSelector, TypedUseSelectorHook } from "react-redux";
+import { useDispatch } from "react-redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import { AuthActionsType } from "./reducers/auth-reducer";
+import { AppActionsType } from "./reducers/app-reducer";
+import { TasksActionsType } from "./reducers/tasks-reducer";
+import { TodoActionsType } from "./reducers/todoList-reducer";
 
-// ======Создаем Store======
+// ==== CREATE STORE ====
 
 const rootReducers = combineReducers({
   todoList: todolistsReducer,
@@ -21,11 +26,6 @@ const rootReducers = combineReducers({
 
 type RootReducersType = typeof rootReducers;
 
-// export const store: Store<RootStateType> = createStore(
-//   rootReducers,
-//   composeWithDevTools(applyMiddleware(thunkMiddleware))
-// );
-
 export const store: Store<RootStateType> = configureStore({
   reducer: rootReducers,
   middleware: (getDefaultMiddleware) =>
@@ -35,9 +35,31 @@ export const store: Store<RootStateType> = configureStore({
 });
 
 export type RootStateType = ReturnType<RootReducersType>;
+export type AppRootActionsType =
+  | AuthActionsType
+  | AppActionsType
+  | TasksActionsType
+  | TodoActionsType;
 
-// export const useAppDispatch = () => useDispatch<RootStateType>();
+// ==== DISPATCH & SELECTOR TYPES ====
+
+export type useAppDispatchType = ThunkDispatch<
+  RootStateType,
+  unknown,
+  AppRootActionsType
+>;
+
+export const useAppDispatch = () => useDispatch<useAppDispatchType>();
 export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;
+
+// ==== THUNKS TYPES
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootStateType,
+  unknown,
+  AppRootActionsType
+>;
 
 //@ts-ignore
 window.store = store;

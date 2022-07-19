@@ -6,11 +6,11 @@ import { DeleteForever } from "@mui/icons-material";
 import { EditableSpan } from "../EditableSpan/EditableSpan";
 import { AddItemForm } from "../AddItemForm/AddItemForm";
 import { FilterValuesType } from "../../store/reducers/todoList-reducer";
-import { fetchTasksTC } from "../../store/thunks";
 import classes from "./ToDoList.module.css";
 import Buttons from "../Buttons/Buttons";
 import { Task } from "../Task/Task";
 import { RequestStatusType } from "../../store/reducers/app-reducer";
+import { fetchTasksTC } from "../../store/reducers/tasks-reducer";
 
 type PropsType = {
   id: string;

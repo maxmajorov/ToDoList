@@ -1,35 +1,38 @@
 import React, { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { TaskStatuses } from "../../api/api";
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { useAppSelector } from "../../store/store";
-import {
-  fetchTodolistsTC,
-  removeTaskTC,
-  addTaskTC,
-  updateTaskTC,
-  changeTodolistTitleTC,
-  removeTodolistTC,
-  addTodolistTC,
-} from "../../store/thunks";
-import { FilterValuesType } from "../../store/reducers/todoList-reducer";
-import { changeTodolistFilterAC } from "../../store/actions";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { Todolist } from "./ToDoList";
-import { selectIsAuth } from "../../store/selectors";
 import { Navigate } from "react-router-dom";
+import { appInitializeSelector } from "../../store/reducers/app-reducer";
+import {
+  addTaskTC,
+  removeTaskTC,
+  tasksSelector,
+  updateTaskTC,
+} from "../../store/reducers/tasks-reducer";
+import {
+  addTodolistTC,
+  changeTodolistFilterAC,
+  changeTodolistTitleTC,
+  fetchTodolistsTC,
+  FilterValuesType,
+  removeTodolistTC,
+  todolistSelector,
+} from "../../store/reducers/todoList-reducer";
 
 export const ToDoListContainer: React.FC = () => {
-  const isAuth = useAppSelector(selectIsAuth);
-  const todolists = useAppSelector((state) => state.todoList);
-  const tasks = useAppSelector((state) => state.task);
-  const dispatch = useDispatch();
+  const isInitialize = useAppSelector(appInitializeSelector);
+  const todolists = useAppSelector(todolistSelector);
+  const tasks = useAppSelector(tasksSelector);
+  const dispatch = useAppDispatch();
 
   // Download todolists from server
 
   useEffect(() => {
-    if (!isAuth) {
+    if (!isInitialize) {
       return;
     }
     dispatch(fetchTodolistsTC());
@@ -37,47 +40,42 @@ export const ToDoListContainer: React.FC = () => {
 
   // ====== FUNCTION FOR CHANGING TASKS_ITEM======
 
-  const removeTask = useCallback(function (id: string, todolistId: string) {
+  const removeTask = useCallback((id: string, todolistId: string) => {
     dispatch(removeTaskTC(id, todolistId));
   }, []);
 
-  const addTask = useCallback(function (title: string, todolistId: string) {
+  const addTask = useCallback((title: string, todolistId: string) => {
     dispatch(addTaskTC(title, todolistId));
   }, []);
 
-  const changeStatus = useCallback(function (
-    id: string,
-    status: TaskStatuses,
-    todolistId: string
-  ) {
-    dispatch(updateTaskTC(id, { status }, todolistId));
-  },
-  []);
+  const changeStatus = useCallback(
+    (id: string, status: TaskStatuses, todolistId: string) => {
+      dispatch(updateTaskTC(id, { status }, todolistId));
+    },
+    []
+  );
 
-  const changeTaskTitle = useCallback(function (
-    id: string,
-    newTitle: string,
-    todolistId: string
-  ) {
-    dispatch(updateTaskTC(id, { title: newTitle }, todolistId));
-  },
-  []);
+  const changeTaskTitle = useCallback(
+    (id: string, newTitle: string, todolistId: string) => {
+      dispatch(updateTaskTC(id, { title: newTitle }, todolistId));
+    },
+    []
+  );
 
-  const changeFilter = useCallback(function (
-    value: FilterValuesType,
-    todolistId: string
-  ) {
-    dispatch(changeTodolistFilterAC(todolistId, value));
-  },
-  []);
+  const changeFilter = useCallback(
+    (value: FilterValuesType, todolistId: string) => {
+      dispatch(changeTodolistFilterAC(todolistId, value));
+    },
+    []
+  );
 
   // ====== FUNCTION FOR CHANGING TODOLIST ======
 
-  const removeTodolist = useCallback(function (id: string) {
+  const removeTodolist = useCallback((id: string) => {
     dispatch(removeTodolistTC(id));
   }, []);
 
-  const changeTodolistTitle = useCallback(function (id: string, title: string) {
+  const changeTodolistTitle = useCallback((id: string, title: string) => {
     dispatch(changeTodolistTitleTC(id, title));
   }, []);
 
@@ -88,7 +86,7 @@ export const ToDoListContainer: React.FC = () => {
     [dispatch]
   );
 
-  if (!isAuth) {
+  if (!isInitialize) {
     return <Navigate to="/login" />;
   }
 

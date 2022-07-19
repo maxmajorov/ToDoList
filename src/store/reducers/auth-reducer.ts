@@ -1,41 +1,78 @@
-import { LOGOUT } from "./../actions/auth-actions";
-import { ActionsType, AUTH_ME, LOGIN } from "../actions/auth-actions";
+import { authAPI, LoginParamsType } from "../../api/api";
+import {
+  handleServerAppError,
+  handleServerNetworkError,
+} from "../../utils/error-utils";
+import { AppThunk, RootStateType } from "../store";
+import { setAppStatusAC } from "./app-reducer";
 
-const initialState = {
-  isAuth: false,
+const initialState: InitialStateType = {
+  isLoggedIn: false,
 };
-
-type InitialStateType = typeof initialState;
 
 export const authReducer = (
   state: InitialStateType = initialState,
-  action: ActionsType
+  action: AuthActionsType
 ): InitialStateType => {
   switch (action.type) {
-    case AUTH_ME: {
-      return {
-        ...state,
-        isAuth: !state.isAuth,
-      };
-    }
-
-    case LOGIN: {
-      return {
-        ...state,
-        isAuth: !state.isAuth,
-      };
-    }
-
-    case LOGOUT: {
-      return {
-        ...state,
-        isAuth: !state.isAuth,
-      };
-    }
-
+    case "login/SET-IS-LOGGED-IN":
+      return { ...state, isLoggedIn: action.value };
     default:
       return state;
   }
 };
 
+// ==== ACTIONS ====
+
+export const setIsLoggedInAC = (value: boolean) =>
+  ({ type: "login/SET-IS-LOGGED-IN", value } as const);
+
+// ==== THUNKS ====
+
+export const loginTC =
+  (data: LoginParamsType): AppThunk =>
+  (dispatch) => {
+    dispatch(setAppStatusAC("loading"));
+    authAPI
+      .login(data)
+      .then((res) => {
+        if (res.data.resultCode === 0) {
+          dispatch(setIsLoggedInAC(true));
+          dispatch(setAppStatusAC("succeeded"));
+        } else {
+          handleServerAppError(res.data, dispatch);
+        }
+      })
+      .catch((error) => {
+        handleServerNetworkError(error, dispatch);
+      });
+  };
+
+export const logoutTC = (): AppThunk => (dispatch) => {
+  dispatch(setAppStatusAC("loading"));
+  authAPI
+    .logout()
+    .then((res) => {
+      if (res.data.resultCode === 0) {
+        dispatch(setIsLoggedInAC(false));
+        dispatch(setAppStatusAC("succeeded"));
+      } else {
+        // handleServerAppError(res.data, dispatch);
+      }
+    })
+    .catch((error) => {
+      handleServerNetworkError(error, dispatch);
+    });
+};
+
+// ==== SELECTORS ====
+
+export const isLoggedInSelector = (state: RootStateType) =>
+  state.auth.isLoggedIn;
+
 // ==== TYPES ====
+
+export type AuthActionsType = ReturnType<typeof setIsLoggedInAC>;
+type InitialStateType = {
+  isLoggedIn: boolean;
+};

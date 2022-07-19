@@ -9,15 +9,17 @@ import {
 } from "@mui/material";
 import classes from "./AppBar.module.css";
 import { MiscellaneousServicesOutlined } from "@mui/icons-material";
-import { useAppSelector } from "../../store/store";
-import { selectIsAuth } from "../../store/selectors";
-import { useDispatch } from "react-redux";
-import { logoutTC } from "../../store/thunks/index";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import {
+  appInitializeSelector,
+  appStatusSelector,
+} from "../../store/reducers/app-reducer";
+import { logoutTC } from "../../store/reducers/auth-reducer";
 
 export const TodoAppBar = () => {
-  const status = useAppSelector((state) => state.app.status);
-  const isAuth = useAppSelector(selectIsAuth);
-  const dispatch = useDispatch();
+  const status = useAppSelector(appStatusSelector);
+  const isAuth = useAppSelector(appInitializeSelector);
+  const dispatch = useAppDispatch();
 
   const logoutHandler = () => {
     dispatch(logoutTC());

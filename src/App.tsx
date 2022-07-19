@@ -7,14 +7,15 @@ import { ToDoListContainer } from "./components/ToDoList/ToDoListContainer";
 import { LoginForm } from "./components/LoginForm/LoginForm";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Error404 from "./components/Error404/Error404";
-import { useAppSelector } from "./store/store";
-import { selectAppInitialize } from "./store/selectors";
-import { useDispatch } from "react-redux";
-import { initializeAppTC } from "./store/thunks/app-thunk";
+import { useAppDispatch, useAppSelector } from "./store/store";
+import {
+  appInitializeSelector,
+  initializeAppTC,
+} from "./store/reducers/app-reducer";
 
 export const App = () => {
-  const isInitialized = useAppSelector(selectAppInitialize);
-  const dispatch = useDispatch();
+  const isInitialized = useAppSelector(appInitializeSelector);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(initializeAppTC());
