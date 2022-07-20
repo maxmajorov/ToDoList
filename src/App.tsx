@@ -17,22 +17,27 @@ export const App = () => {
   const isInitialized = useAppSelector(appInitializeSelector);
   const dispatch = useAppDispatch();
 
+  console.log(isInitialized);
   useEffect(() => {
     dispatch(initializeAppTC());
   }, []);
 
-  return !isInitialized ? (
-    <>
-      <TodoAppBar />
-    </>
-  ) : (
+  if (!isInitialized) {
+    return (
+      <>
+        <TodoAppBar />
+      </>
+    );
+  }
+
+  return (
     <div className="App">
       <ErrorSnackbar />
       <TodoAppBar />
       <Container fixed>
         <Routes>
           <Route path="/" element={<ToDoListContainer />} />
-          <Route path="login" element={<LoginForm />} />
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/404" element={<Error404 />} />
           <Route path="*" element={<Navigate to="/404" />} />
         </Routes>

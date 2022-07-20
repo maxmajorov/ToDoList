@@ -23,7 +23,7 @@ export const ErrorSnackbar = () => {
     if (reason === "clickway") {
       return;
     }
-    dispatch(setAppErrorAC(null));
+    dispatch(setAppErrorAC({ error: null }));
   };
 
   return (

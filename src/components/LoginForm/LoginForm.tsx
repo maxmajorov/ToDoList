@@ -18,6 +18,8 @@ export const LoginForm: React.FC = () => {
   const dispatch = useAppDispatch();
   let navigate = useNavigate();
 
+  console.log("login", isLoggedIn);
+
   type FormikErrorType = {
     email?: string;
     password?: string;

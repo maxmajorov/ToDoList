@@ -16,6 +16,7 @@ import {
   RemoveTodolistActionType,
   SetTodolistsActionType,
 } from "./todoList-reducer";
+import { Dispatch } from "@reduxjs/toolkit";
 
 const initialState: TasksStateType = {};
 
@@ -84,29 +85,25 @@ export const setTasksAC = (tasks: Array<TaskType>, todolistId: string) =>
   ({ type: "tasks/SET-TASKS", tasks, todolistId } as const);
 
 // ==== THUNKS ====
-export const fetchTasksTC =
-  (todolistId: string): AppThunk =>
-  (dispatch) => {
-    dispatch(setAppStatusAC("loading"));
-    todolistsAPI.getTasks(todolistId).then((res) => {
-      const tasks = res.data.items;
-      dispatch(setTasksAC(tasks, todolistId));
-      dispatch(setAppStatusAC("succeeded"));
-    });
-  };
+export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC({ status: "loading" }));
+  todolistsAPI.getTasks(todolistId).then((res) => {
+    const tasks = res.data.items;
+    dispatch(setTasksAC(tasks, todolistId));
+    dispatch(setAppStatusAC({ status: "succeeded" }));
+  });
+};
 
 export const removeTaskTC =
-  (taskId: string, todolistId: string): AppThunk =>
-  (dispatch) => {
+  (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.deleteTask(todolistId, taskId).then((res) => {
       const action = removeTaskAC(taskId, todolistId);
       dispatch(action);
     });
   };
 export const addTaskTC =
-  (title: string, todolistId: string): AppThunk =>
-  (dispatch) => {
-    dispatch(setAppStatusAC("loading"));
+  (title: string, todolistId: string) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({ status: "loading" }));
     todolistsAPI
       .createTask(todolistId, title)
       .then((res) => {
@@ -114,7 +111,7 @@ export const addTaskTC =
           const task = res.data.data.item;
           const action = addTaskAC(task);
           dispatch(action);
-          dispatch(setAppStatusAC("succeeded"));
+          dispatch(setAppStatusAC({ status: "succeeded" }));
         } else {
           handleServerAppError(res.data, dispatch);
         }

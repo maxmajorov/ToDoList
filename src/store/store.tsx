@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore, Store } from "redux";
+import { combineReducers, Store } from "redux";
 import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import {
   appReducer,
@@ -8,10 +8,8 @@ import {
 } from "./reducers";
 import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { useDispatch } from "react-redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 import { configureStore } from "@reduxjs/toolkit";
-import { AuthActionsType } from "./reducers/auth-reducer";
-import { AppActionsType } from "./reducers/app-reducer";
+
 import { TasksActionsType } from "./reducers/tasks-reducer";
 import { TodoActionsType } from "./reducers/todoList-reducer";
 
@@ -35,11 +33,7 @@ export const store: Store<RootStateType> = configureStore({
 });
 
 export type RootStateType = ReturnType<RootReducersType>;
-export type AppRootActionsType =
-  | AuthActionsType
-  | AppActionsType
-  | TasksActionsType
-  | TodoActionsType;
+export type AppRootActionsType = TasksActionsType | TodoActionsType;
 
 // ==== DISPATCH & SELECTOR TYPES ====
 
