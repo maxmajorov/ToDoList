@@ -16,8 +16,6 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = ({
   const [editMode, setEditMode] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
 
-  console.log(entityTaskStatus);
-
   let spanStyle: string = "";
 
   const activateEditMode = (event: MouseEvent<HTMLSpanElement>) => {

@@ -10,9 +10,6 @@ import { useSelector, TypedUseSelectorHook } from "react-redux";
 import { useDispatch } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 
-import { TasksActionsType } from "./reducers/tasks-reducer";
-import { TodoActionsType } from "./reducers/todoList-reducer";
-
 // ==== CREATE STORE ====
 
 const rootReducers = combineReducers({
@@ -33,14 +30,15 @@ export const store: Store<RootStateType> = configureStore({
 });
 
 export type RootStateType = ReturnType<RootReducersType>;
-export type AppRootActionsType = TasksActionsType | TodoActionsType;
+// export type AppRootActionsType
 
 // ==== DISPATCH & SELECTOR TYPES ====
 
 export type useAppDispatchType = ThunkDispatch<
   RootStateType,
   unknown,
-  AppRootActionsType
+  // AppRootActionsType
+  any
 >;
 
 export const useAppDispatch = () => useDispatch<useAppDispatchType>();
@@ -52,7 +50,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootStateType,
   unknown,
-  AppRootActionsType
+  // AppRootActionsType
+  any
 >;
 
 //@ts-ignore

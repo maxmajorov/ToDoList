@@ -6,20 +6,20 @@ import { FilterValuesType } from "../../store/reducers/todoList-reducer";
 type ButtonsType = {
   id: string;
   filter: FilterValuesType;
-  changeFilter: (filter: FilterValuesType, todoListID: string) => void;
+  changeFilter: (id: string, filter: FilterValuesType) => void;
 };
 
 const Buttons: React.FC<ButtonsType> = ({ id, filter, changeFilter }) => {
   const onClickAllButton = useCallback(
-    () => changeFilter("all", id),
+    () => changeFilter(id, "all"),
     [changeFilter, id]
   );
   const onClickActiveButton = useCallback(
-    () => changeFilter("active", id),
+    () => changeFilter(id, "active"),
     [changeFilter, id]
   );
   const onClickCompletedButton = useCallback(
-    () => changeFilter("completed", id),
+    () => changeFilter(id, "completed"),
     [changeFilter, id]
   );
 

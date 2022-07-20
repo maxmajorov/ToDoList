@@ -62,12 +62,9 @@ export const ToDoListContainer: React.FC = () => {
     []
   );
 
-  const changeFilter = useCallback(
-    (value: FilterValuesType, todolistId: string) => {
-      dispatch(changeTodolistFilterAC(todolistId, value));
-    },
-    []
-  );
+  const changeFilter = useCallback((id: string, filter: FilterValuesType) => {
+    dispatch(changeTodolistFilterAC({ id, filter }));
+  }, []);
 
   // ====== FUNCTION FOR CHANGING TODOLIST ======
 

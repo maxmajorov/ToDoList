@@ -17,7 +17,7 @@ type PropsType = {
   title: string;
   tasks: Array<TaskType>;
   entityStatus: RequestStatusType;
-  changeFilter: (value: FilterValuesType, todolistId: string) => void;
+  changeFilter: (id: string, filter: FilterValuesType) => void;
   addTask: (title: string, todolistId: string) => void;
   changeTaskStatus: (
     id: string,
@@ -59,15 +59,15 @@ export const Todolist = React.memo(function (props: PropsType) {
   );
 
   const onAllClickHandler = useCallback(
-    () => props.changeFilter("all", props.id),
+    () => props.changeFilter(props.id, "all"),
     [props.id, props.changeFilter]
   );
   const onActiveClickHandler = useCallback(
-    () => props.changeFilter("active", props.id),
+    () => props.changeFilter(props.id, "active"),
     [props.id, props.changeFilter]
   );
   const onCompletedClickHandler = useCallback(
-    () => props.changeFilter("completed", props.id),
+    () => props.changeFilter(props.id, "completed"),
     [props.id, props.changeFilter]
   );
 
