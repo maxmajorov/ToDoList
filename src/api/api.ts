@@ -140,6 +140,7 @@ export type TaskType = {
   addedDate: string;
   entityTaskStatus: RequestStatusType;
 };
+
 export type UpdateTaskModelType = {
   title: string;
   description: string;
