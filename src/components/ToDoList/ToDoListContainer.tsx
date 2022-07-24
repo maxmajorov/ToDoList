@@ -22,9 +22,11 @@ import {
   removeTodolistTC,
   todolistSelector,
 } from "../../store/reducers/todoList-reducer";
+import { isLoggedInSelector } from "../../store/reducers/auth-reducer";
 
 export const ToDoListContainer: React.FC = () => {
   const isInitialize = useAppSelector(appInitializeSelector);
+  const isLoggedIn = useAppSelector(isLoggedInSelector);
   const todolists = useAppSelector(todolistSelector);
   const tasks = useAppSelector(tasksSelector);
   const dispatch = useAppDispatch();
@@ -83,7 +85,7 @@ export const ToDoListContainer: React.FC = () => {
     [dispatch]
   );
 
-  if (!isInitialize) {
+  if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
 

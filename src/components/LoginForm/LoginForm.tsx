@@ -28,8 +28,8 @@ export const LoginForm: React.FC = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: "free@samuraijs.com",
+      password: "free",
       rememberMe: false,
     },
 
