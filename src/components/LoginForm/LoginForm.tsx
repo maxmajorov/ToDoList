@@ -7,18 +7,23 @@ import FormGroup from "@mui/material/FormGroup";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useFormik } from "formik";
+import { FormikHelpers, useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { loginTC } from "../../store/reducers/auth-reducer";
 import { isLoggedInSelector } from "../../store/reducers/auth-reducer";
 
+type FormikValuesTypes = {
+  email: string;
+  password: string;
+  rememberMe: false;
+};
+
 export const LoginForm: React.FC = () => {
-  const isLoggedIn = useAppSelector(isLoggedInSelector);
   const dispatch = useAppDispatch();
   let navigate = useNavigate();
 
-  console.log("login", isLoggedIn);
+  const isLoggedIn = useAppSelector(isLoggedInSelector);
 
   type FormikErrorType = {
     email?: string;
@@ -53,10 +58,15 @@ export const LoginForm: React.FC = () => {
       return errors;
     },
 
-    onSubmit: (values) => {
-      const { email, password, rememberMe } = values;
+    onSubmit: async (
+      values: FormikValuesTypes,
+      formikHelpers: FormikHelpers<FormikValuesTypes>
+    ) => {
+      const response = await dispatch(loginTC(values));
+
+      console.log(response);
+
       formik.resetForm();
-      dispatch(loginTC({ email, password, rememberMe }));
     },
   });
 

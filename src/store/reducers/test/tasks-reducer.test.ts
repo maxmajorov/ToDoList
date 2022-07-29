@@ -1,8 +1,7 @@
-import { UpdateDomainTaskModelType } from "./../tasks-reducer";
+import { removeTaskTC, UpdateDomainTaskModelType } from "./../tasks-reducer";
 import { TaskPriorities, TaskType, TodolistType } from "./../../../api/api";
 import {
   addTaskAC,
-  removeTaskAC,
   tasksReducer,
   TasksStateType,
   updateTaskAC,
@@ -99,10 +98,17 @@ beforeEach(() => {
 });
 
 test("correct task should be removed", () => {
-  const action = removeTaskAC({
-    taskId: startState["todoListID_1"][0].id,
-    todolistId: "todoListID_1",
-  });
+  const action = removeTaskTC.fulfilled(
+    {
+      taskId: startState["todoListID_1"][0].id,
+      todolistId: "todoListID_1",
+    },
+    "requestID",
+    {
+      taskId: startState["todoListID_1"][0].id,
+      todolistId: "todoListID_1",
+    }
+  );
   const endState = tasksReducer(startState, action);
 
   expect(endState["todoListID_1"].length).toBe(2);
