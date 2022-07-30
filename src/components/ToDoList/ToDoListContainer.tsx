@@ -47,19 +47,21 @@ export const ToDoListContainer: React.FC = () => {
   }, []);
 
   const addTask = useCallback((title: string, todolistId: string) => {
-    dispatch(addTaskTC(title, todolistId));
+    dispatch(addTaskTC({ title, todolistId }));
   }, []);
 
   const changeStatus = useCallback(
     (id: string, status: TaskStatuses, todolistId: string) => {
-      dispatch(updateTaskTC(id, { status }, todolistId));
+      dispatch(updateTaskTC({ taskId: id, model: { status }, todolistId }));
     },
     []
   );
 
   const changeTaskTitle = useCallback(
     (id: string, newTitle: string, todolistId: string) => {
-      dispatch(updateTaskTC(id, { title: newTitle }, todolistId));
+      dispatch(
+        updateTaskTC({ taskId: id, model: { title: newTitle }, todolistId })
+      );
     },
     []
   );
