@@ -1,7 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { authAPI } from "../../api/api";
 import { RootStateType } from "../store";
-import { setIsLoggedInAC } from "./auth-reducer";
+// import { setIsLoggedInAC } from "./auth-reducer";
 
 const initialState = {
   status: "idle",
@@ -43,7 +43,7 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
     .authMe()
     .then((res) => {
       if (res.data.resultCode === 0) {
-        dispatch(setIsLoggedInAC({ value: true }));
+        // dispatch(setIsLoggedInAC({ value: true }));
       } else {
       }
     })

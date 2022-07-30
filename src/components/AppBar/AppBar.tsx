@@ -14,7 +14,7 @@ import {
   appInitializeSelector,
   appStatusSelector,
 } from "../../store/reducers/app-reducer";
-// import { logoutTC } from "../../store/reducers/auth-reducer";
+import { logoutTC } from "../../store/reducers/auth-reducer";
 
 export const TodoAppBar = () => {
   const status = useAppSelector(appStatusSelector);
@@ -22,7 +22,7 @@ export const TodoAppBar = () => {
   const dispatch = useAppDispatch();
 
   const logoutHandler = () => {
-    // dispatch(logoutTC());
+    dispatch(logoutTC());
   };
 
   return (

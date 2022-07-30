@@ -1,9 +1,9 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { ResponseType } from "../api/api";
+import { LogoutResponseType, ResponseType } from "../api/api";
 import { setAppErrorAC, setAppStatusAC } from "../store/reducers/app-reducer";
 
 export const handleServerAppError = <D>(
-  data: ResponseType<D>,
+  data: ResponseType<D> | LogoutResponseType,
   dispatch: Dispatch
 ) => {
   if (data.messages.length) {

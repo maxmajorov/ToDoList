@@ -1,5 +1,5 @@
-import { combineReducers, Store } from "redux";
-import thunkMiddleware, { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { combineReducers } from "redux";
+import thunkMiddleware, { ThunkAction } from "redux-thunk";
 import {
   appReducer,
   authReducer,
@@ -19,9 +19,7 @@ const rootReducers = combineReducers({
   auth: authReducer,
 });
 
-type RootReducersType = typeof rootReducers;
-
-export const store: Store<RootStateType> = configureStore({
+export const store = configureStore({
   reducer: rootReducers,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().prepend(thunkMiddleware),
@@ -29,19 +27,13 @@ export const store: Store<RootStateType> = configureStore({
   // .concat(logger),
 });
 
-export type RootStateType = ReturnType<RootReducersType>;
-// export type AppRootActionsType
+export type RootStateType = ReturnType<typeof store.getState>;
 
 // ==== DISPATCH & SELECTOR TYPES ====
 
-export type useAppDispatchType = ThunkDispatch<
-  RootStateType,
-  unknown,
-  // AppRootActionsType
-  any
->;
+type AppDispatchType = typeof store.dispatch;
 
-export const useAppDispatch = () => useDispatch<useAppDispatchType>();
+export const useAppDispatch = () => useDispatch<AppDispatchType>();
 export const useAppSelector: TypedUseSelectorHook<RootStateType> = useSelector;
 
 // ==== THUNKS TYPES

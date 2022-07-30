@@ -22,7 +22,7 @@ export const authAPI = {
   },
 
   logout() {
-    return instance.delete<LoguotResponseType>("auth/login");
+    return instance.delete<LogoutResponseType>("auth/login");
   },
 };
 
@@ -92,9 +92,10 @@ export type LoginParamsType = {
   captcha?: boolean;
 };
 
-export type LoguotResponseType = {
+export type LogoutResponseType = {
   resultCode: number;
   messages: Array<string>;
+  // fieldsErrors?: Array<string>;
   data: {};
 };
 

@@ -63,8 +63,14 @@ export const LoginForm: React.FC = () => {
       formikHelpers: FormikHelpers<FormikValuesTypes>
     ) => {
       const response = await dispatch(loginTC(values));
+      // response ==>>> action
 
-      console.log(response);
+      if (loginTC.rejected.match(response)) {
+        if (response.payload?.fieldsErrors?.length) {
+          const err = response.payload?.fieldsErrors[0];
+          formikHelpers.setFieldError("email", err); // проверить что приходит в fieldErrors
+        }
+      }
 
       formik.resetForm();
     },
