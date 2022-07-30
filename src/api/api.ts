@@ -22,6 +22,7 @@ export const authAPI = {
   },
 
   logout() {
+    console.log("logout");
     return instance.delete<LogoutResponseType>("auth/login");
   },
 };

@@ -1,17 +1,46 @@
-import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AxiosError } from "axios";
 import { authAPI } from "../../api/api";
+import {
+  handleServerAppError,
+  handleServerNetworkError,
+} from "../../utils/error-utils";
 import { RootStateType } from "../store";
-// import { setIsLoggedInAC } from "./auth-reducer";
+import { setIsLoggedInAC } from "./auth-reducer";
 
-const initialState = {
-  status: "idle",
-  error: null as null | string,
-  isInitialized: false,
-};
+// ==== THUNKS ====
+
+export const initializeAppTC = createAsyncThunk(
+  "app/initialize",
+  async (param, thunkAPI) => {
+    const response = await authAPI.authMe();
+
+    try {
+      thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
+      if (response.data.resultCode === 0) {
+        thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
+        thunkAPI.dispatch(setIsLoggedInAC());
+        return;
+      } else {
+        handleServerAppError(response.data, thunkAPI.dispatch);
+      }
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>;
+      handleServerNetworkError(err, thunkAPI.dispatch);
+      return thunkAPI.rejectWithValue({
+        errors: response.data.messages,
+      });
+    }
+  }
+);
 
 const slice = createSlice({
   name: "app",
-  initialState: initialState,
+  initialState: {
+    status: "idle",
+    error: null as null | string,
+    isInitialized: false,
+  },
   reducers: {
     setAppStatusAC(
       state,
@@ -24,33 +53,23 @@ const slice = createSlice({
       state.error = action.payload.error;
     },
 
-    setAppInitializedAC(
-      state,
-      action: PayloadAction<{ isInitialized: boolean }>
-    ) {
-      state.isInitialized = action.payload.isInitialized;
-    },
+    // setAppInitializedAC(
+    //   state,
+    //   action: PayloadAction<{ isInitialized: boolean }>
+    // ) {
+    //   state.isInitialized = action.payload.isInitialized;
+    // },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(initializeAppTC.fulfilled, (state) => {
+      state.isInitialized = true;
+    });
   },
 });
 
 export const appReducer = slice.reducer;
 
-export const { setAppErrorAC, setAppStatusAC, setAppInitializedAC } =
-  slice.actions;
-
-export const initializeAppTC = () => (dispatch: Dispatch) => {
-  authAPI
-    .authMe()
-    .then((res) => {
-      if (res.data.resultCode === 0) {
-        // dispatch(setIsLoggedInAC({ value: true }));
-      } else {
-      }
-    })
-    .finally(() => {
-      dispatch(setAppInitializedAC({ isInitialized: true }));
-    });
-};
+export const { setAppErrorAC, setAppStatusAC } = slice.actions;
 
 // ==== SELECTORS ====
 
@@ -64,8 +83,3 @@ export const appErrorSelector = (state: RootStateType) => state.app.error;
 //==== TYPES ====
 
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed";
-// export type InitialStateType = {
-//   status: RequestStatusType;
-//   error: string | null;
-//   isInitialized: boolean;
-// };

@@ -18,7 +18,7 @@ interface ValidationErrors {
 }
 
 export const loginTC = createAsyncThunk<
-  { isLoggedIn: boolean },
+  undefined,
   LoginParamsType,
   {
     rejectValue: ValidationErrors;
@@ -30,7 +30,7 @@ export const loginTC = createAsyncThunk<
     thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
     if (response.data.resultCode === 0) {
       thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-      return { isLoggedIn: true };
+      return;
     } else {
       handleServerAppError(response.data, thunkAPI.dispatch);
       return thunkAPI.rejectWithValue({
@@ -50,17 +50,19 @@ export const loginTC = createAsyncThunk<
 
 export const logoutTC = createAsyncThunk(
   "authorization/logout",
-  async ({}, thunkAPI) => {
+  async (param, thunkAPI) => {
     const response = await authAPI.logout();
 
     try {
       thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
       if (response.data.resultCode === 0) {
         thunkAPI.dispatch(setAppStatusAC({ status: "succeeded" }));
-        return { isLoggedIn: false };
+        return;
       } else {
         handleServerAppError(response.data, thunkAPI.dispatch);
-        return { isLoggedIn: true };
+        return thunkAPI.rejectWithValue({
+          errors: response.data.messages,
+        });
       }
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>;
@@ -77,19 +79,25 @@ const slice = createSlice({
   initialState: {
     isLoggedIn: false,
   },
-  reducers: {},
+  reducers: {
+    setIsLoggedInAC(state) {
+      state.isLoggedIn = true;
+    },
+  },
   extraReducers(builder) {
-    builder.addCase(loginTC.fulfilled, (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn;
+    builder.addCase(loginTC.fulfilled, (state) => {
+      state.isLoggedIn = true;
     });
 
-    builder.addCase(logoutTC.fulfilled, (state, action) => {
-      state.isLoggedIn = action.payload.isLoggedIn;
+    builder.addCase(logoutTC.fulfilled, (state) => {
+      state.isLoggedIn = false;
     });
   },
 });
 
 export const authReducer = slice.reducer;
+
+export const { setIsLoggedInAC } = slice.actions;
 
 // ==== SELECTORS ====
 

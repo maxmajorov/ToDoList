@@ -43,7 +43,11 @@ export const TodoAppBar = () => {
           {!isAuth ? (
             <Button color="inherit">Login</Button>
           ) : (
-            <Button color="inherit" onClick={logoutHandler}>
+            <Button
+              color="inherit"
+              onClick={logoutHandler}
+              // style={{ textTransform: "lowercase" }}
+            >
               Logout
             </Button>
           )}
