@@ -1,12 +1,12 @@
 import { removeTaskTC, UpdateDomainTaskModelType } from "./../tasks-reducer";
 import { TaskPriorities, TaskType, TodolistType } from "./../../../api/api";
 import {
-  addTaskAC,
+  addTaskTC,
   tasksReducer,
   TasksStateType,
-  updateTaskAC,
+  updateTaskTC,
 } from "../tasks-reducer";
-import { addTodolistAC } from "../todoList-reducer";
+import { addTodolistTC } from "../todoList-reducer";
 
 let startState: TasksStateType = {};
 
@@ -200,7 +200,13 @@ test("correct task should be added", () => {
     entityTaskStatus: "succeeded",
   };
 
-  const endState = tasksReducer(startState, addTaskAC({ task: newTask }));
+  const endState = tasksReducer(
+    startState,
+    addTaskTC.fulfilled(newTask, "requestId", {
+      title: "New task",
+      todolistId: "ssss-vvvv-bbbb",
+    })
+  );
 
   expect(endState["todoListID_2"].length).toBe(4);
   expect(endState["todoListID_2"][0].title).toBe("New task");
@@ -212,11 +218,19 @@ test("correct task should update title", () => {
     title: "New task title",
   };
 
-  const action = updateTaskAC({
-    taskId: "1",
-    model,
-    todolistId: "todoListID_1",
-  });
+  const action = updateTaskTC.fulfilled(
+    {
+      taskId: "1",
+      model,
+      todolistId: "todoListID_1",
+    },
+    "requestId",
+    {
+      taskId: "1",
+      model,
+      todolistId: "todoListID_1",
+    }
+  );
   const endState = tasksReducer(startState, action);
 
   expect(endState["todoListID_1"][0].title).toBe("New task title");
@@ -227,11 +241,19 @@ test("correct task should be changed status", () => {
     status: 2,
   };
 
-  const action = updateTaskAC({
-    taskId: "1",
-    model,
-    todolistId: "todoListID_1",
-  });
+  const action = updateTaskTC.fulfilled(
+    {
+      taskId: "1",
+      model,
+      todolistId: "todoListID_1",
+    },
+    "requestId",
+    {
+      taskId: "1",
+      model,
+      todolistId: "todoListID_1",
+    }
+  );
 
   const endState = tasksReducer(startState, action);
 
@@ -246,7 +268,11 @@ test("new empty array should be add when todoList add", () => {
     order: 0,
   };
 
-  const action = addTodolistAC({ todolist: newTodo });
+  const action = addTodolistTC.fulfilled(
+    { todolist: newTodo },
+    "requestId",
+    "new todo"
+  );
   const endState = tasksReducer(startState, action);
 
   const keys = Object.keys(endState);

@@ -13,13 +13,11 @@ import {
 import { setAppStatusAC } from "./app-reducer";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
-  addTodolistAC,
-  removeTodolistAC,
-  setTodolistsAC,
+  addTodolistTC,
+  fetchTodolistsTC,
+  removeTodolistTC,
 } from "./todoList-reducer";
 import { AxiosError } from "axios";
-
-const initialState: TasksStateType = {};
 
 // ==== THUNKS ====
 
@@ -31,8 +29,6 @@ export const fetchTasksTC = createAsyncThunk(
 
     try {
       thunkAPI.dispatch(setAppStatusAC({ status: "loading" }));
-
-      // thunkAPI.dispatch(setTasksAC({ tasks, todolistId }));
       return { tasks, todolistId };
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>;
@@ -114,9 +110,12 @@ export const updateTaskTC = createAsyncThunk(
     thunkAPI
   ) => {
     const state = thunkAPI.getState() as RootStateType;
-    const task = state.task[param.todolistId].find(
-      (t) => t.id === param.taskId
-    );
+    const task = state.task[param.todolistId].filter((t) => {
+      if (t.id === param.taskId) {
+        return t;
+      }
+      return t;
+    })[0];
 
     if (!task) {
       thunkAPI.rejectWithValue("No match");
@@ -165,20 +164,20 @@ export const updateTaskTC = createAsyncThunk(
 
 const slice = createSlice({
   name: "tasks",
-  initialState,
+  initialState: {} as TasksStateType,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(addTodolistAC, (state, action) => {
+    builder.addCase(addTodolistTC.fulfilled, (state, action) => {
       state[action.payload.todolist.id] = [];
     });
 
-    builder.addCase(setTodolistsAC, (state, action) => {
+    builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
       action.payload.todolists.forEach((tl) => {
         state[tl.id] = [];
       });
     });
 
-    builder.addCase(removeTodolistAC, (state, action) => {
+    builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
       delete state[action.payload.id];
     });
 

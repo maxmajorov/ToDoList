@@ -1,7 +1,7 @@
 import { TodolistType } from "../../../api/api";
 import { tasksReducer, TasksStateType } from "../tasks-reducer";
 import {
-  addTodolistAC,
+  addTodolistTC,
   TodolistDomainType,
   todolistsReducer,
 } from "../todoList-reducer";
@@ -17,7 +17,11 @@ test("ids should be equals", () => {
     order: 0,
   };
 
-  const action = addTodolistAC({ todolist });
+  const action = addTodolistTC.fulfilled(
+    { todolist },
+    "requestId",
+    "New todoList"
+  );
   const endTasksState = tasksReducer(startTasksState, action);
   const endTodolistsState = todolistsReducer(startTodolistsState, action);
 
@@ -28,3 +32,5 @@ test("ids should be equals", () => {
   expect(idFromTasks).toBe(action.payload.todolist.id);
   expect(idFromTodolists).toBe(action.payload.todolist.id);
 });
+
+// Дописать на остальные кейсы

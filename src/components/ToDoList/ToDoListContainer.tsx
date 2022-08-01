@@ -77,7 +77,7 @@ export const ToDoListContainer: React.FC = () => {
   }, []);
 
   const changeTodolistTitle = useCallback((id: string, title: string) => {
-    dispatch(changeTodolistTitleTC(id, title));
+    dispatch(changeTodolistTitleTC({ id, title }));
   }, []);
 
   const addTodolist = useCallback(
