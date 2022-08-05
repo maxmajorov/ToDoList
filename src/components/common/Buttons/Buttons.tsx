@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Button } from "@mui/material";
 import classes from "./Buttons.module.css";
-import { FilterValuesType } from "../../store/reducers/todoList-reducer";
+import { FilterValuesType } from "../../../store/reducers/todoList-reducer";
 
 type ButtonsType = {
   id: string;

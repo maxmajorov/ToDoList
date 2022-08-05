@@ -3,13 +3,6 @@ import {
   handleServerAppError,
   handleServerNetworkError,
 } from "../../utils/error-utils";
-import {
-  TaskPriorities,
-  TaskStatuses,
-  TaskType,
-  todolistsAPI,
-  UpdateTaskModelType,
-} from "../../api/api";
 import { setAppStatusAC } from "./app-reducer";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
@@ -18,6 +11,13 @@ import {
   removeTodolistTC,
 } from "./todoList-reducer";
 import { AxiosError } from "axios";
+import { todolistsAPI } from "../../api/api";
+import {
+  TaskPriorities,
+  TaskStatuses,
+  TaskType,
+  UpdateTaskModelType,
+} from "../../api/types";
 
 // ==== THUNKS ====
 

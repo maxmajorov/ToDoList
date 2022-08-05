@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { TaskStatuses } from "../../api/api";
+import { TaskStatuses } from "../../api/types";
 import { AddItemForm } from "../../components/AddItemForm/AddItemForm";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -24,7 +24,7 @@ import {
 } from "../../store/reducers/todoList-reducer";
 import { isLoggedInSelector } from "../../store/reducers/auth-reducer";
 
-export const ToDoListContainer: React.FC = () => {
+export const TodolistsList: React.FC = () => {
   const isInitialize = useAppSelector(appInitializeSelector);
   const isLoggedIn = useAppSelector(isLoggedInSelector);
   const todolists = useAppSelector(todolistSelector);
@@ -90,24 +90,25 @@ export const ToDoListContainer: React.FC = () => {
   if (!isLoggedIn) {
     return <Navigate to="/login" />;
   }
-
   return (
     <>
       <Grid container style={{ padding: "20px" }}>
         <AddItemForm addItem={addTodolist} />
       </Grid>
-      <Grid container spacing={3}>
+      <Grid
+        container
+        spacing={3}
+        // style={{ flexWrap: "nowrap", overflowX: "scroll" }}
+      >
         {todolists.map((tl) => {
           let allTodolistTasks = tasks[tl.id];
 
           return (
             <Grid item key={tl.id}>
-              <Paper style={{ padding: "10px" }}>
+              <div style={{ width: "300px" }}>
                 <Todolist
-                  id={tl.id}
-                  title={tl.title}
+                  todolist={tl}
                   tasks={allTodolistTasks}
-                  entityStatus={tl.entityStatus}
                   removeTask={removeTask}
                   changeFilter={changeFilter}
                   addTask={addTask}
@@ -117,7 +118,7 @@ export const ToDoListContainer: React.FC = () => {
                   changeTaskTitle={changeTaskTitle}
                   changeTodolistTitle={changeTodolistTitle}
                 />
-              </Paper>
+              </div>
             </Grid>
           );
         })}

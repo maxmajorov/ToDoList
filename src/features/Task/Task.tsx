@@ -2,14 +2,12 @@ import React, { ChangeEvent, useCallback } from "react";
 import { Delete } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
-import { EditableSpan } from "../EditableSpan/EditableSpan";
-import { TaskStatuses, TaskType } from "../../api/api";
-import { RequestStatusType } from "../../store/reducers/app-reducer";
+import { EditableSpan } from "../../components/EditableSpan/EditableSpan";
+import { TaskStatuses, TaskType } from "../../api/types";
 
 type TaskPropsType = {
   task: TaskType;
   todolistId: string;
-  entityTaskStatus: RequestStatusType;
   changeTaskStatus: (
     id: string,
     status: TaskStatuses,
@@ -22,7 +20,7 @@ type TaskPropsType = {
   ) => void;
   removeTask: (taskId: string, todolistId: string) => void;
 };
-export const Task = React.memo((props: TaskPropsType) => {
+export const Task: React.FC<TaskPropsType> = React.memo((props) => {
   const onClickHandler = useCallback(
     () => props.removeTask(props.task.id, props.todolistId),
     [props.task.id, props.todolistId]
@@ -61,7 +59,7 @@ export const Task = React.memo((props: TaskPropsType) => {
       <EditableSpan
         value={props.task.title}
         onChange={onTitleChangeHandler}
-        entityTaskStatus={props.entityTaskStatus}
+        // entityTaskStatus={props.entityTaskStatus}
       />
       <IconButton onClick={onClickHandler}>
         <Delete />

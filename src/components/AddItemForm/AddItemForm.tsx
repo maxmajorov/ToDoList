@@ -6,7 +6,7 @@ import { RequestStatusType } from "../../store/reducers/app-reducer";
 
 type AddItemFormPropsType = {
   addItem: (newItem: string) => void;
-  entityStatus?: RequestStatusType;
+  entityStatus?: string;
 };
 
 export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(
@@ -33,8 +33,8 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(
     };
 
     return (
-      <div className={classes.inner}>
-        <div>
+      <>
+        <div className={classes.inner}>
           <TextField
             id="outlined-textarea"
             value={newTitle}
@@ -56,9 +56,9 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(
               color={entityStatus === "loading" ? "disabled" : "primary"}
             />
           </IconButton>
-          <div className={classes.error}>{error}</div>
         </div>
-      </div>
+        <div className={classes.error}>{error}</div>
+      </>
     );
   }
 );

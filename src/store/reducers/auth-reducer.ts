@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { authAPI, LoginParamsType } from "../../api/api";
+import { authAPI } from "../../api/api";
+import { LoginParamsType } from "../../api/types";
 import {
   handleServerAppError,
   handleServerNetworkError,
@@ -35,7 +36,7 @@ export const loginTC = createAsyncThunk<
       handleServerAppError(response.data, thunkAPI.dispatch);
       return thunkAPI.rejectWithValue({
         errors: response.data.messages,
-        fieldsErrors: response.data.fieldsErrors,
+        fieldsErrors: [""],
       });
     }
   } catch (e) {
@@ -43,7 +44,7 @@ export const loginTC = createAsyncThunk<
     handleServerNetworkError(err, thunkAPI.dispatch);
     return thunkAPI.rejectWithValue({
       errors: response.data.messages,
-      fieldsErrors: response.data.fieldsErrors,
+      fieldsErrors: [""],
     });
   }
 });

@@ -1,5 +1,6 @@
 import { RootStateType } from "./../store";
-import { todolistsAPI, TodolistType } from "../../api/api";
+import { todolistsAPI } from "../../api/api";
+import { TodolistType } from "../../api/types";
 import {
   handleServerAppError,
   handleServerNetworkError,
