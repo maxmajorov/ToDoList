@@ -37,7 +37,9 @@ export const TodolistsList: React.FC = () => {
     if (!isInitialize) {
       return;
     }
-    dispatch(fetchTodolistsTC());
+    if (!todolists.length) {
+      dispatch(fetchTodolistsTC());
+    }
   }, []);
 
   // ====== FUNCTION FOR CHANGING TASKS_ITEM======
@@ -98,7 +100,7 @@ export const TodolistsList: React.FC = () => {
       <Grid
         container
         spacing={3}
-        // style={{ flexWrap: "nowrap", overflowX: "scroll" }}
+        style={{ flexWrap: "nowrap", overflowX: "scroll" }}
       >
         {todolists.map((tl) => {
           let allTodolistTasks = tasks[tl.id];

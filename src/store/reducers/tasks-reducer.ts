@@ -110,7 +110,7 @@ export const updateTaskTC = createAsyncThunk(
     thunkAPI
   ) => {
     const state = thunkAPI.getState() as RootStateType;
-    const task = state.task[param.todolistId].filter((t) => {
+    const task = state.tasks[param.todolistId].filter((t) => {
       if (t.id === param.taskId) {
         return t;
       }
@@ -216,7 +216,7 @@ export const tasksReducer = slice.reducer;
 
 // ==== SELECTORS ====
 
-export const tasksSelector = (state: RootStateType) => state.task;
+export const tasksSelector = (state: RootStateType) => state.tasks;
 
 // ==== TYPES ====
 

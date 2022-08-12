@@ -7,14 +7,23 @@ import { store } from "./store/store";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app/App";
 
-ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
+const rerenderEntireTree = () => {
+  ReactDOM.render(
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>,
 
-  document.getElementById("root")
-);
+    document.getElementById("root")
+  );
+};
 
 serviceWorker.unregister();
+rerenderEntireTree();
+
+if (process.env.NODE_ENV === "development" && module.hot) {
+  module.hot.accept("./app/App", () => {
+    rerenderEntireTree();
+  });
+}

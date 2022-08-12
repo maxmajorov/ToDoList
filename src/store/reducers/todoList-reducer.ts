@@ -172,7 +172,7 @@ export const { changeTodolistFilterAC, changeTodolistEntityStatusAC } =
 
 // ==== SELECTORS ====
 
-export const todolistSelector = (state: RootStateType) => state.todoList;
+export const todolistSelector = (state: RootStateType) => state.todolists;
 
 // ==== TYPES ====
 

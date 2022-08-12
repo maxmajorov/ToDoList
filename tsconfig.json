@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+     "types": ["webpack-env"],
     "lib": [
       "dom",
       "dom.iterable",
