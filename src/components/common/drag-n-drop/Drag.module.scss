@@ -1,0 +1,23 @@
+.drag {
+  display: flex;
+
+ .board {
+  padding: 20px 70px;
+  border: 2px solid gray;
+  margin-right: 10px;
+  border-radius: 5px;
+
+  .name {
+    padding: 20px 50px;
+    border: 2px dotted red;
+    margin: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+ }
+}
+
+
+
+
+
